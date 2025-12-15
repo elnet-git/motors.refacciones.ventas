@@ -34,9 +34,16 @@ body{
 h1{text-align:center;margin:0}
 .premio{
   text-align:center;
-  margin:8px 0 12px;
+  margin:8px 0 4px;
   color:#00e676;
   font-weight:bold;
+}
+.premio-desc{
+  text-align:center;
+  font-size:13px;
+  color:#ccc;
+  margin-bottom:12px;
+  line-height:1.4;
 }
 .contador{
   background:#000;
@@ -92,10 +99,18 @@ button:hover{background:#00e676}
 
 <body>
 <div class="card">
+
 <h1>Rifa JQ</h1>
 
+<!-- PREMIO -->
 <div class="premio" id="premioTexto">
-🎁 Premio: Servicio completo o descuento especial
+🎁 Premio: Servicio Basico
+</div>
+
+<!-- DESCRIPCIÓN DEL PREMIO -->
+<div class="premio-desc" id="premioDesc">
+Incluye cambio de aceite, revisión general, ajuste de cadena y frenos.
+No incluye refacciones mayores.
 </div>
 
 <div class="contador" id="countdown"></div>
@@ -109,11 +124,15 @@ button:hover{background:#00e676}
 
 <button class="admin-btn" id="btnAdmin">ADMIN</button>
 
+<!-- PANEL ADMIN -->
 <div class="panel-admin" id="panelAdmin">
   <strong>Panel Admin</strong>
 
   <input type="text" id="nuevoPremio" placeholder="Editar premio">
   <button onclick="guardarPremio()">Guardar premio</button>
+
+  <input type="text" id="descPremioInput" placeholder="Descripción detallada del premio">
+  <button onclick="guardarDescPremio()">Guardar descripción</button>
 
   <input type="date" id="fechaRifaInput">
   <button onclick="guardarFecha()">Guardar fecha</button>
@@ -126,23 +145,15 @@ button:hover{background:#00e676}
 </div>
 
 <script>
-/* =================== CONFIG =================== */
+/* ========= CONFIG ========= */
+const ADMIN_PASSWORD = "netojq2025";
+
 const STORAGE_FECHA="fechaRifaJQ";
 const STORAGE_ADMIN="adminActivo";
 const STORAGE_PREMIO="premioRifa";
-const STORAGE_BLOQUEO="adminBloqueadoHasta";
+const STORAGE_DESC_PREMIO="descPremioRifa";
 
-/* 🔐 HASH SHA-256 de contraseña "JQ2025" */
-const ADMIN_HASH = "2f2b2c3f8b0c1f5e9a3f4bbfddab9a41f6c93b26f1c5c0b8f9e5b9f0b4f2e9c7";
-
-/* =================== UTIL =================== */
-async function sha256(text){
-  const buf=new TextEncoder().encode(text);
-  const hash=await crypto.subtle.digest("SHA-256",buf);
-  return [...new Uint8Array(hash)].map(x=>x.toString(16).padStart(2,"0")).join("");
-}
-
-/* =================== FECHA =================== */
+/* ========= FECHA ========= */
 function obtenerFecha(){
   let f=localStorage.getItem(STORAGE_FECHA);
   if(!f){
@@ -163,11 +174,14 @@ function guardarFecha(){
   alert("Fecha guardada");
 }
 
-/* =================== COUNTDOWN =================== */
+/* ========= COUNTDOWN ========= */
 const cd=document.getElementById("countdown");
 function tick(){
   const diff=fechaRifa-new Date();
-  if(diff<=0){cd.textContent="🎉 ¡Hoy es la rifa!";return;}
+  if(diff<=0){
+    cd.textContent="🎉 ¡Hoy es la rifa!";
+    return;
+  }
   const d=Math.floor(diff/86400000);
   const h=Math.floor(diff/3600000)%24;
   const m=Math.floor(diff/60000)%60;
@@ -176,10 +190,15 @@ function tick(){
 }
 setInterval(tick,1000);tick();
 
-/* =================== PREMIO =================== */
+/* ========= PREMIO Y DESCRIPCIÓN ========= */
 const premioEl=document.getElementById("premioTexto");
-const premioGuardado=localStorage.getItem(STORAGE_PREMIO);
-if(premioGuardado) premioEl.textContent="🎁 Premio: "+premioGuardado;
+const descEl=document.getElementById("premioDesc");
+
+if(localStorage.getItem(STORAGE_PREMIO))
+  premioEl.textContent="🎁 Premio: "+localStorage.getItem(STORAGE_PREMIO);
+
+if(localStorage.getItem(STORAGE_DESC_PREMIO))
+  descEl.textContent=localStorage.getItem(STORAGE_DESC_PREMIO);
 
 function guardarPremio(){
   const p=document.getElementById("nuevoPremio").value.trim();
@@ -189,47 +208,48 @@ function guardarPremio(){
   alert("Premio actualizado");
 }
 
-/* =================== REGISTRO =================== */
+function guardarDescPremio(){
+  const d=document.getElementById("descPremioInput").value.trim();
+  if(!d) return alert("Escribe una descripción");
+  localStorage.setItem(STORAGE_DESC_PREMIO,d);
+  descEl.textContent=d;
+  alert("Descripción actualizada");
+}
+
+/* ========= REGISTRO ========= */
 registroForm.onsubmit=e=>{
   e.preventDefault();
   let regs=JSON.parse(localStorage.getItem("registrosJQ"))||[];
   if(regs.some(r=>r.telefono===telefono.value))
-    return alert("Teléfono ya registrado");
+    return alert("Este teléfono ya está registrado");
+
   regs.push({
     nombre:nombre.value,
     telefono:telefono.value,
     moto:moto.value,
     fecha:new Date().toLocaleString()
   });
+
   localStorage.setItem("registrosJQ",JSON.stringify(regs));
   alert("Registro exitoso");
   registroForm.reset();
 };
 
-/* =================== ADMIN SEGURIDAD =================== */
-btnAdmin.onclick=async()=>{
-  const bloqueo=localStorage.getItem(STORAGE_BLOQUEO);
-  if(bloqueo && Date.now()<bloqueo){
-    alert("Admin bloqueado temporalmente");
-    return;
-  }
-
+/* ========= ADMIN ========= */
+btnAdmin.onclick=()=>{
   const pass=prompt("Contraseña admin");
-  if(!pass) return;
-
-  if(await sha256(pass)===ADMIN_HASH){
+  if(pass===ADMIN_PASSWORD){
     localStorage.setItem(STORAGE_ADMIN,"1");
     panelAdmin.style.display="block";
   }else{
-    localStorage.setItem(STORAGE_BLOQUEO,Date.now()+300000);
-    alert("Contraseña incorrecta. Bloqueado 5 min");
+    alert("❌ Contraseña incorrecta");
   }
 };
 
 if(localStorage.getItem(STORAGE_ADMIN))
   panelAdmin.style.display="block";
 
-/* =================== ADMIN FUNCIONES =================== */
+/* ========= ADMIN FUNCIONES ========= */
 function elegirGanador(){
   const r=JSON.parse(localStorage.getItem("registrosJQ"))||[];
   if(!r.length) return alert("No hay participantes");
@@ -238,12 +258,12 @@ function elegirGanador(){
 }
 
 function nuevaRifa(){
-  if(!confirm("Borrar participantes y crear nueva rifa?"))return;
-  localStorage.removeItem("registrosJQ");
-  localStorage.removeItem(STORAGE_FECHA);
-  localStorage.removeItem(STORAGE_ADMIN);
+  if(!confirm("¿Borrar participantes y crear nueva rifa?"))return;
+  localStorage.clear();
+  alert("Nueva rifa creada");
   location.reload();
 }
 </script>
+
 </body>
 </html>
