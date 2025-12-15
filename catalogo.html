@@ -1,315 +1,248 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>JQ Motors | Catálogo</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<title>Catálogo Refacciones Bajaj</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-/* ==========================
-   🎨 ESTILO PREMIUM JQ MOTORS
-   ========================== */
 :root{
-  --bg: #0e0e0e;
-  --card: #181818;
-  --guinda: #8B1E1E;
-  --guinda-claro:#B83232;
-  --white: #f5f5f5;
-  --shadow-strong: 0 6px 22px rgba(0,0,0,.65);
-  --shadow-soft: 0 4px 16px rgba(0,0,0,.45);
+  --guinda:#7B1E1E;
+  --guinda-osc:#5a1414;
+  --fondo:#111;
 }
 
-*{box-sizing:border-box;}
 body{
   margin:0;
-  padding:0;
-  font-family:'Montserrat',sans-serif;
-  background:var(--bg);
-  color:var(--white);
-  user-select:none;
+  background:var(--fondo);
+  color:#eee;
+  font-family:Montserrat,Arial;
 }
 
-/* ======= NAVBAR PRO ======= */
-.navbar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:14px 18px;
-  background:linear-gradient(90deg, var(--guinda), var(--guinda-claro));
-  position:sticky;
-  top:0;
-  z-index:1000;
-  box-shadow:var(--shadow-strong);
-}
-.logo{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-.logo img{
-  height:48px;
-  filter:drop-shadow(0 2px 3px rgba(0,0,0,.5));
-}
-.logo h1{
-  font-size:1.3rem;
-  margin:0;
-  letter-spacing:2px;
-}
-.navbar nav ul{
-  list-style:none;
-  display:flex;
-  gap:14px;
-  padding:0;
-  margin:0;
-}
-.navbar a{
-  font-weight:600;
-  text-decoration:none;
-  color:#fff;
-  padding:8px 10px;
-  border-radius:6px;
-  transition:0.25s;
-}
-.navbar a:hover,
-.navbar a.active{
-  background:rgba(255,255,255,.17);
-  backdrop-filter: blur(6px);
-}
-
-/* ======= CONTENIDO ======= */
-.catalogo{
-  padding:20px 18px;
-}
-.catalogo h2{
-  margin:0 0 16px;
-  font-weight:700;
-  color:var(--guinda-claro);
-  text-shadow:0 2px 4px rgba(0,0,0,.5);
-}
-
-/* ======= BOTONES DE MARCAS ======= */
-.marcas{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-}
-.marca-btn{
-  padding:12px 20px;
-  border:none;
-  background:var(--card);
-  color:#fff;
-  cursor:pointer;
-  border-radius:10px;
-  font-weight:600;
-  box-shadow:var(--shadow-soft);
-  transition:0.25s;
-}
-.marca-btn:hover,
-.marca-btn.active{
-  background:var(--guinda);
-  transform:translateY(-3px);
-}
-
-/* ======= SUBMODELOS SCROLL ======= */
-.scroll-submodelos{
-  display:flex;
-  overflow-x:auto;
-  margin:14px 0;
-  gap:10px;
-  padding-bottom:6px;
-}
-.scroll-submodelos button{
-  flex-shrink:0;
-  min-width:120px;
-  padding:10px;
-  background:var(--card);
-  color:white;
-  border:none;
-  border-radius:8px;
-  font-weight:600;
-  box-shadow:var(--shadow-soft);
-  transition:.25s;
-}
-.scroll-submodelos button:hover,
-.scroll-submodelos button.active{
-  background:var(--guinda-claro);
-  transform:translateY(-3px);
-}
-
-/* ======= GRID DE PARTES ======= */
-.grid-partes{
-  margin-top:18px;
-  display:grid;
-  grid-template-columns:repeat(auto-fill, minmax(150px,1fr));
-  gap:16px;
-}
-.pieza{
-  background:var(--card);
-  border-radius:14px;
-  padding:10px;
+h1,h2{
   text-align:center;
-  cursor:pointer;
-  box-shadow:var(--shadow-soft);
-  transition:0.35s;
-}
-.pieza:hover{
-  transform:translateY(-6px);
-  box-shadow:var(--shadow-strong);
-}
-.pieza img{
-  width:100%;
-  height:120px;
-  object-fit:cover;
-  border-radius:10px;
-  transition:0.3s;
-}
-.pieza span{
-  display:block;
-  margin-top:8px;
-  font-weight:600;
+  color:#fff;
 }
 
-/* ======= IMAGEN AMPLIADA ======= */
-.grid-piezas{
-  margin-top:20px;
-  display:flex;
-  justify-content:center;
-  flex-wrap:wrap;
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:20px;
+  padding:20px;
+  max-width:1300px;
+  margin:auto;
 }
-.grid-piezas img{
-  width:85%;
-  max-width:450px;
+
+.card{
+  background:#fff;
+  color:#000;
   border-radius:12px;
-  box-shadow:var(--shadow-strong);
-  transition:0.35s;
+  overflow:hidden;
   cursor:pointer;
+  transition:.25s;
+  box-shadow:0 6px 15px rgba(0,0,0,.4);
 }
-.grid-piezas img.expanded{
-  transform:scale(1.8);
-  z-index:2000;
+.card:hover{
+  transform:translateY(-5px);
 }
 
-/* ======= RESPONSIVE ======= */
-@media(max-width:600px){
-  .grid-partes{
-    grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
-  }
-  .pieza img{
-    height:100px;
-  }
+.card img{
+  width:100%;
+  height:160px;
+  object-fit:contain;
+  background:#f4f4f4;
+}
+
+.info{
+  padding:12px;
+}
+
+.info h3{
+  margin:0;
+  font-size:1rem;
+  color:var(--guinda);
+}
+
+.info p{
+  margin:4px 0 0;
+  font-size:.85rem;
+}
+
+.hidden{display:none}
+
+button.back{
+  margin:15px auto;
+  display:block;
+  padding:10px 18px;
+  border:none;
+  background:var(--guinda);
+  color:#fff;
+  border-radius:6px;
+  font-size:.9rem;
+  cursor:pointer;
+}
+button.back:hover{
+  background:var(--guinda-osc);
 }
 </style>
 </head>
 
 <body>
 
-<header class="navbar">
-  <div class="logo">
-    <img src="images/logo/logo.png">
-    <h1>JQ MOTORS</h1>
-  </div>
-  <nav>
-    <ul>
-      <li><a class="active">Catálogo</a></li>
-      <li><a href="index.html">Inicio</a></li>
-      <li><a href="promociones.html">Promo</a></li>
-      <li><a href="pizarron.html">Pizarrón</a></li>
-    </ul>
-  </nav>
-</header>
+<h1>Catálogo de Refacciones Bajaj</h1>
 
-<section class="catalogo">
-  <h2>Catálogo de Refacciones</h2>
+<!-- NIVEL 1 -->
+<section id="nivel1">
+  <h2>MOTOCICLETAS</h2>
+  <div class="grid" id="motosGrid"></div>
+</section>
 
-  <div class="container">
-    <div id="marcas" class="marcas">
-      <button class="marca-btn" data-model="A">CHASIS</button>
-      <button class="marca-btn" data-model="B">ELECTRICO</button>
-      <button class="marca-btn" data-model="C">FRENOS </button>
-      <button class="marca-btn" data-model="D">MOTOR</button>
-      <button class="marca-btn" data-model="E">SUSPENCION</button>
-      <button class="marca-btn" data-model="F">TRACCION</button>
-      <button class="marca-btn" data-model="G">TRANSMISION</button>
-    </div>
+<!-- NIVEL 2 -->
+<section id="nivel2" class="hidden">
+  <button class="back" onclick="volverNivel1()">← Volver a motos</button>
+  <h2 id="motoTitulo"></h2>
+  <div class="grid" id="sistemasGrid"></div>
+</section>
 
-    <div id="submodelos" class="scroll-submodelos"></div>
-    <div id="partes" class="grid-partes"></div>
-    <div id="piezas" class="grid-piezas"></div>
-  </div>
+<!-- NIVEL 3 -->
+<section id="nivel3" class="hidden">
+  <button class="back" onclick="volverNivel2()">← Volver a sistemas</button>
+  <h2 id="sistemaTitulo"></h2>
+  <div class="grid" id="refaccionesGrid"></div>
 </section>
 
 <script>
-/* Tu JS original sin cambiar nada importante */
-const submodelosData={
-  A:["MANIJAS","SALPICADERAS","PUÑOS","POSAPIES","VELOCIMETRO","TAPAS","PARADOR","TAPONES DE GASOLINA"],
-  B:["RELEY","CDI","ARNES","STATOR","FARO","DIRECCIONALES"],
-  C:["CHICOTES","BALATAS","DISCOS","CALIPER","ABS"],
-  D:["CARBURADOR","ARBOL DE LEVAS","JUNTAS","CIGUEÑAL","CILINDRO","CABEZA","VALVULAS","BALEROS","BALANCEADOR","CLUTCH"],
-  E:["MONOSHOCK","BARRAS DELANTERAS","AMORTIGUADOR","RETENES DE BARRA","EJES"],
-  F:["BUJES ","KIT DE ARRASTRE",],
-  G:["EMBRAGUE","ENGRANES",]
+// =====================
+// MOTOS (NIVEL 1)
+// =====================
+const motos = [
+ {id:"AV220", nombre:"Bajaj Avenger Cruise 220 2025", img:"images/motos/avenger220.png"},
+ {id:"BOX150", nombre:"Bajaj Boxer BM 150 UG 2025", img:"images/motos/boxer150.png"},
+ {id:"PLA100", nombre:"Bajaj Boxer Platina 100 2025", img:"images/motos/platina100.png"},
+ {id:"DOM250", nombre:"Bajaj Dominar 250 2025", img:"images/motos/dominar250.png"},
+ {id:"N125", nombre:"Bajaj Pulsar N125 FI 2026", img:"images/motos/n125.png"},
+ {id:"N160", nombre:"Bajaj Pulsar N160 UG FI + ABS 2025", img:"images/motos/n160.png"},
+ {id:"N250C", nombre:"Bajaj Pulsar N250 Carburada 2025", img:"images/motos/n250c.png"},
+ {id:"N250FI", nombre:"Bajaj Pulsar N250 UG FI + ABS 2025", img:"images/motos/n250fi.png"},
+ {id:"NS125", nombre:"Bajaj Pulsar NS 125 UG 2025", img:"images/motos/ns125.png"},
+ {id:"NS160", nombre:"Bajaj Pulsar NS 160 UG 2025", img:"images/motos/ns160.png"},
+ {id:"NS200", nombre:"Bajaj Pulsar NS 200 UG 2025", img:"images/motos/ns200.png"},
+ {id:"RS200", nombre:"Bajaj Pulsar RS 200 2025", img:"images/motos/rs200.png"},
+ {id:"DOM400AG", nombre:"Dominar 400 4 Elementos Agua 2025", img:"images/motos/dom400-agua.png"},
+ {id:"DOM400AR", nombre:"Dominar 400 4 Elementos Aire 2025", img:"images/motos/dom400-aire.png"},
+ {id:"DOM400FU", nombre:"Dominar 400 4 Elementos Fuego 2025", img:"images/motos/dom400-fuego.png"},
+ {id:"DOM400TI", nombre:"Dominar 400 4 Elementos Tierra 2025", img:"images/motos/dom400-tierra.png"},
+ {id:"DOM400UG", nombre:"Dominar 400 UG Touring 2025", img:"images/motos/dominar400ug.png"},
+ {id:"NS400Z", nombre:"Pulsar NS 400Z 2025", img:"images/motos/ns400z.png"}
+];
+// =====================
+// SISTEMAS (NIVEL 2)
+// =====================
+const sistemas = [
+ {id:"motor", nombre:"Motor", img:"images/sistemas/motor.png"},
+ {id:"frenos", nombre:"Frenos", img:"images/sistemas/frenos.png"},
+ {id:"electrico", nombre:"Sistema Eléctrico", img:"images/sistemas/electrico.png"},
+ {id:"suspension", nombre:"Suspensión", img:"images/sistemas/suspension.png"},
+ {id:"carroceria", nombre:"Carrocería", img:"images/sistemas/carroceria.png"},
+ {id:"llantas", nombre:"Llantas y Rines", img:"images/sistemas/llantas.png"},
+ {id:"transmision", nombre:"Transmisión", img:"images/sistemas/transmision.png"}
+];
+
+// =====================
+// DESPIECE (NIVEL 3)
+// =====================
+const despiece = {
+ DOM400:{
+   motor:[
+     {codigo:"PST-400", nombre:"Pistón", img:"images/refacciones/piston.png"},
+     {codigo:"CIL-400", nombre:"Cilindro", img:"images/refacciones/cilindro.png"}
+   ],
+   frenos:[
+     {codigo:"BAL-400", nombre:"Balata", img:"images/refacciones/balata.png"},
+     {codigo:"BOM-400", nombre:"Bomba de freno", img:"images/refacciones/bomba.png"}
+   ]
+ }
 };
 
-const nivel3CarpetaURL="catalogo/nivel3_partes/";
-const carpetasNivel3=[ /* ... tus carpetas ... */ ];
-const codigoImagen={ /* ... tu mapeo ... */ };
+// =====================
+// LÓGICA
+// =====================
+const motosGrid = document.getElementById("motosGrid");
+const sistemasGrid = document.getElementById("sistemasGrid");
+const refaccionesGrid = document.getElementById("refaccionesGrid");
 
-const marcasBtns=document.querySelectorAll(".marca-btn");
-const submodelosDiv=document.getElementById("submodelos");
-const partesDiv=document.getElementById("partes");
-const piezasDiv=document.getElementById("piezas");
+let motoSel = null;
+let sistemaSel = null;
 
-let marcaActual=null;
-let submodeloActual=null;
-
-marcasBtns.forEach(btn=>{
-  btn.addEventListener("click",()=>{
-    marcaActual=btn.dataset.model;
-    marcasBtns.forEach(b=>b.classList.remove("active"));
-    btn.classList.add("active");
-    submodelosDiv.innerHTML="";
-    partesDiv.innerHTML="";
-    piezasDiv.innerHTML="";
-    submodelosData[marcaActual]?.forEach(sm=>{
-      const b=document.createElement("button");
-      b.textContent=sm;
-      b.onclick=()=>{
-        submodeloActual=sm;
-        submodelosDiv.querySelectorAll("button").forEach(x=>x.classList.remove("active"));
-        b.classList.add("active");
-        cargarPartes();
-      };
-      submodelosDiv.appendChild(b);
-    });
-  });
+// NIVEL 1
+motos.forEach(m=>{
+  const c=document.createElement("div");
+  c.className="card";
+  c.innerHTML=`
+    <img src="${m.img}" onerror="this.onerror=null;this.src='images/placeholder.png'">
+    <div class="info"><h3>${m.nombre}</h3></div>
+  `;
+  c.onclick=()=>abrirSistemas(m);
+  motosGrid.appendChild(c);
 });
 
-function limpiarNombre(c){
-  return c.replace(/_/g," ").replace(/-/g," ");
+// NIVEL 2
+function abrirSistemas(moto){
+  motoSel = moto;
+  nivel1.classList.add("hidden");
+  nivel2.classList.remove("hidden");
+  motoTitulo.innerText = moto.nombre;
+  sistemasGrid.innerHTML="";
+
+  sistemas.forEach(s=>{
+    const c=document.createElement("div");
+    c.className="card";
+    c.innerHTML=`
+      <img src="${s.img}" onerror="this.onerror=null;this.src='images/placeholder.png'">
+      <div class="info"><h3>${s.nombre}</h3></div>
+    `;
+    c.onclick=()=>abrirRefacciones(s);
+    sistemasGrid.appendChild(c);
+  });
 }
 
-function cargarPartes(){
-  piezasDiv.innerHTML="";
-  partesDiv.innerHTML="";
-  carpetasNivel3.forEach(carpeta=>{
-    const div=document.createElement("div");
-    div.className="pieza";
-    const nombre=limpiarNombre(carpeta);
-    const imgURL=nivel3CarpetaURL+carpeta+"/"+codigoImagen[carpeta];
-    div.innerHTML=`<img src="${imgURL}"><span>${nombre}</span>`;
-    div.onclick=()=>{
-      piezasDiv.innerHTML="";
-      const img=document.createElement("img");
-      img.src=imgURL;
-      img.classList.add("expanded");
-      img.onclick=()=>img.classList.toggle("expanded");
-      piezasDiv.appendChild(img);
-      img.scrollIntoView({behavior:"smooth"});
-    };
-    partesDiv.appendChild(div);
+function volverNivel1(){
+  nivel2.classList.add("hidden");
+  nivel1.classList.remove("hidden");
+}
+
+// NIVEL 3
+function abrirRefacciones(s){
+  sistemaSel = s;
+  nivel2.classList.add("hidden");
+  nivel3.classList.remove("hidden");
+  sistemaTitulo.innerText = motoSel.nombre + " – " + s.nombre;
+  refaccionesGrid.innerHTML="";
+
+  const piezas = despiece[motoSel.id]?.[s.id] || [];
+
+  if(!piezas.length){
+    refaccionesGrid.innerHTML="<p style='text-align:center'>No hay refacciones cargadas.</p>";
+    return;
+  }
+
+  piezas.forEach(p=>{
+    const c=document.createElement("div");
+    c.className="card";
+    c.innerHTML=`
+      <img src="${p.img}" onerror="this.onerror=null;this.src='images/placeholder.png'">
+      <div class="info">
+        <h3>${p.codigo}</h3>
+        <p>${p.nombre}</p>
+      </div>
+    `;
+    refaccionesGrid.appendChild(c);
   });
+}
+
+function volverNivel2(){
+  nivel3.classList.add("hidden");
+  nivel2.classList.remove("hidden");
 }
 </script>
 
