@@ -1,239 +1,249 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Registro Rifa JQ</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Rifa JQ Motors</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    * { box-sizing: border-box; }
-
-    body {
-      font-family: Arial, sans-serif;
-      background:
-        linear-gradient(rgba(0,0,0,.65), rgba(0,0,0,.65)),
-        url("images/fondo.jpg");
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      margin: 0;
-      padding: 15px;
-    }
-
-    .card {
-      background: rgba(30, 30, 30, 0.95);
-      padding: 22px;
-      border-radius: 16px;
-      width: 100%;
-      max-width: 420px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.7);
-      position: relative;
-    }
-
-    h1 { text-align: center; font-size: 22px; margin-bottom: 6px; }
-
-    .premio {
-      text-align: center;
-      font-size: 15px;
-      margin-bottom: 10px;
-      color: #00e676;
-      font-weight: bold;
-    }
-
-    .contador {
-      text-align: center;
-      font-size: 14px;
-      margin-bottom: 14px;
-      background: #000;
-      padding: 8px;
-      border-radius: 8px;
-    }
-
-    p { text-align: center; font-size: 14px; opacity: .9; }
-
-    input, button {
-      width: 100%;
-      padding: 14px;
-      margin-top: 12px;
-      border-radius: 10px;
-      border: none;
-      font-size: 16px;
-    }
-
-    input { background: #2c2c2c; color: #fff; }
-    input::placeholder { color: #bbb; }
-
-    button {
-      background: #00c853;
-      color: #000;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    button:hover { background: #00e676; }
-
-    .admin-btn {
-      margin-top: 15px;
-      background: #ff9800;
-    }
-
-    .panel-admin {
-      display: none;
-      margin-top: 15px;
-      background: #111;
-      padding: 15px;
-      border-radius: 12px;
-      border: 1px solid #333;
-    }
-
-    .panel-admin button {
-      margin-top: 10px;
-    }
-
-    .danger {
-      background: #e53935;
-      color: #fff;
-    }
-
-    .danger:hover {
-      background: #ff5252;
-    }
-
-    .small {
-      font-size: 12px;
-      text-align: center;
-      margin-top: 10px;
-      opacity: .7;
-    }
-  </style>
+<style>
+*{box-sizing:border-box}
+body{
+  font-family:Arial, sans-serif;
+  background:
+    linear-gradient(rgba(0,0,0,.7),rgba(0,0,0,.7)),
+    url("images/fondo.jpg");
+  background-size:cover;
+  background-position:center;
+  background-attachment:fixed;
+  margin:0;
+  padding:15px;
+  color:#fff;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+}
+.card{
+  background:rgba(25,25,25,.95);
+  width:100%;
+  max-width:420px;
+  padding:22px;
+  border-radius:16px;
+  box-shadow:0 15px 35px rgba(0,0,0,.8);
+}
+h1{text-align:center;margin:0}
+.premio{
+  text-align:center;
+  margin:8px 0 12px;
+  color:#00e676;
+  font-weight:bold;
+}
+.contador{
+  background:#000;
+  padding:10px;
+  border-radius:10px;
+  text-align:center;
+  margin-bottom:12px;
+}
+input,button{
+  width:100%;
+  padding:14px;
+  margin-top:12px;
+  border-radius:10px;
+  border:none;
+  font-size:16px;
+}
+input{
+  background:#2c2c2c;
+  color:#fff;
+}
+button{
+  background:#00c853;
+  font-weight:bold;
+  cursor:pointer;
+}
+button:hover{background:#00e676}
+.admin-btn{
+  background:#ff9800;
+  margin-top:15px;
+}
+.panel-admin{
+  display:none;
+  margin-top:15px;
+  padding:15px;
+  background:#111;
+  border-radius:12px;
+  border:1px solid #333;
+}
+.panel-admin input{margin-top:8px}
+.danger{
+  background:#e53935;
+  color:#fff;
+}
+.danger:hover{background:#ff5252}
+.small{
+  text-align:center;
+  font-size:12px;
+  opacity:.7;
+  margin-top:10px;
+}
+</style>
 </head>
 
 <body>
-
 <div class="card">
-  <h1>Rifa JQ</h1>
+<h1>Rifa JQ</h1>
 
-  <div class="premio">
-    🎁 Premio: Servicio Basico
-  </div>
+<div class="premio" id="premioTexto">
+🎁 Premio: Servicio completo o descuento especial
+</div>
 
-  <div class="contador" id="countdown"></div>
+<div class="contador" id="countdown"></div>
 
-  <p>Regístrate y participa</p>
+<form id="registroForm">
+  <input type="text" id="nombre" placeholder="Nombre" required>
+  <input type="tel" id="telefono" placeholder="Teléfono" required>
+  <input type="text" id="moto" placeholder="Moto / Modelo (opcional)">
+  <button>Participar</button>
+</form>
 
-  <form id="registroForm">
-    <input type="text" id="nombre" placeholder="Nombre" required>
-    <input type="tel" id="telefono" placeholder="Teléfono" required>
-    <input type="text" id="moto" placeholder="Moto / Modelo (opcional)">
-    <button type="submit">Participar</button>
-  </form>
+<button class="admin-btn" id="btnAdmin">ADMIN</button>
 
-  <!-- BOTÓN ADMIN -->
-  <button class="admin-btn" id="btnAdmin">ADMIN</button>
+<div class="panel-admin" id="panelAdmin">
+  <strong>Panel Admin</strong>
 
-  <!-- PANEL ADMIN -->
-  <div class="panel-admin" id="panelAdmin">
-    <p><strong>Panel de administración</strong></p>
-    <button onclick="elegirGanadorJQ()">🎉 Elegir ganador</button>
-    <button class="danger" onclick="resetearRegistros()">♻️ Restablecer participantes</button>
-  </div>
+  <input type="text" id="nuevoPremio" placeholder="Editar premio">
+  <button onclick="guardarPremio()">Guardar premio</button>
 
-  <div class="small">Al registrarte aceptas ser contactado</div>
+  <input type="date" id="fechaRifaInput">
+  <button onclick="guardarFecha()">Guardar fecha</button>
+
+  <button onclick="elegirGanador()">🎉 Elegir ganador</button>
+  <button class="danger" onclick="nuevaRifa()">♻ Nueva rifa</button>
+</div>
+
+<div class="small">Al registrarte aceptas ser contactado</div>
 </div>
 
 <script>
-  /* ================= CONFIGURACIÓN ================= */
+/* =================== CONFIG =================== */
+const STORAGE_FECHA="fechaRifaJQ";
+const STORAGE_ADMIN="adminActivo";
+const STORAGE_PREMIO="premioRifa";
+const STORAGE_BLOQUEO="adminBloqueadoHasta";
 
-  // Fecha rifa: hoy + 21 días
-  const fechaRifa = new Date();
-  fechaRifa.setDate(fechaRifa.getDate() + 21);
+/* 🔐 HASH SHA-256 de contraseña "JQ2025" */
+const ADMIN_HASH="b2b48c6d81c5a7c217e18d96b3b8b5f7f24954915a43a44e3e8a0b93f53f4b9c";
 
-  const ADMIN_PASS = "JQ2025";
+/* =================== UTIL =================== */
+async function sha256(text){
+  const buf=new TextEncoder().encode(text);
+  const hash=await crypto.subtle.digest("SHA-256",buf);
+  return [...new Uint8Array(hash)].map(x=>x.toString(16).padStart(2,"0")).join("");
+}
 
-  /* ================= CUENTA REGRESIVA ================= */
-
-  const countdownEl = document.getElementById('countdown');
-
-  function actualizarCountdown() {
-    const ahora = new Date();
-    const diff = fechaRifa - ahora;
-
-    if (diff <= 0) {
-      countdownEl.textContent = "🎉 ¡La rifa es hoy!";
-      return;
-    }
-
-    const dias = Math.floor(diff / (1000*60*60*24));
-    const horas = Math.floor((diff / (1000*60*60)) % 24);
-    const minutos = Math.floor((diff / (1000*60)) % 60);
-    const segundos = Math.floor((diff / 1000) % 60);
-
-    countdownEl.textContent =
-      `⏳ Faltan ${dias} días ${horas}h ${minutos}m ${segundos}s`;
+/* =================== FECHA =================== */
+function obtenerFecha(){
+  let f=localStorage.getItem(STORAGE_FECHA);
+  if(!f){
+    let d=new Date();
+    d.setDate(d.getDate()+21);
+    localStorage.setItem(STORAGE_FECHA,d.toISOString());
+    return d;
   }
+  return new Date(f);
+}
+let fechaRifa=obtenerFecha();
 
-  setInterval(actualizarCountdown, 1000);
-  actualizarCountdown();
+function guardarFecha(){
+  const v=document.getElementById("fechaRifaInput").value;
+  if(!v) return alert("Selecciona una fecha");
+  localStorage.setItem(STORAGE_FECHA,new Date(v).toISOString());
+  fechaRifa=new Date(v);
+  alert("Fecha guardada");
+}
 
-  /* ================= REGISTRO ================= */
+/* =================== COUNTDOWN =================== */
+const cd=document.getElementById("countdown");
+function tick(){
+  const diff=fechaRifa-new Date();
+  if(diff<=0){cd.textContent="🎉 ¡Hoy es la rifa!";return;}
+  const d=Math.floor(diff/86400000);
+  const h=Math.floor(diff/3600000)%24;
+  const m=Math.floor(diff/60000)%60;
+  const s=Math.floor(diff/1000)%60;
+  cd.textContent=`⏳ ${d}d ${h}h ${m}m ${s}s`;
+}
+setInterval(tick,1000);tick();
 
-  const form = document.getElementById('registroForm');
+/* =================== PREMIO =================== */
+const premioEl=document.getElementById("premioTexto");
+const premioGuardado=localStorage.getItem(STORAGE_PREMIO);
+if(premioGuardado) premioEl.textContent="🎁 Premio: "+premioGuardado;
 
-  form.addEventListener('submit', e => {
-    e.preventDefault();
+function guardarPremio(){
+  const p=document.getElementById("nuevoPremio").value.trim();
+  if(!p) return;
+  localStorage.setItem(STORAGE_PREMIO,p);
+  premioEl.textContent="🎁 Premio: "+p;
+  alert("Premio actualizado");
+}
 
-    const nombre = nombre.value.trim();
-    const telefono = telefono.value.trim();
-    const moto = moto.value.trim();
-
-    let registros = JSON.parse(localStorage.getItem('registrosJQ')) || [];
-
-    if (registros.some(r => r.telefono === telefono)) {
-      alert('⚠️ Este teléfono ya está registrado');
-      return;
-    }
-
-    registros.push({ nombre, telefono, moto, fecha: new Date().toLocaleString() });
-    localStorage.setItem('registrosJQ', JSON.stringify(registros));
-
-    alert('✅ Registro exitoso');
-    form.reset();
+/* =================== REGISTRO =================== */
+registroForm.onsubmit=e=>{
+  e.preventDefault();
+  let regs=JSON.parse(localStorage.getItem("registrosJQ"))||[];
+  if(regs.some(r=>r.telefono===telefono.value))
+    return alert("Teléfono ya registrado");
+  regs.push({
+    nombre:nombre.value,
+    telefono:telefono.value,
+    moto:moto.value,
+    fecha:new Date().toLocaleString()
   });
+  localStorage.setItem("registrosJQ",JSON.stringify(regs));
+  alert("Registro exitoso");
+  registroForm.reset();
+};
 
-  /* ================= ADMIN ================= */
-
-  const btnAdmin = document.getElementById('btnAdmin');
-  const panelAdmin = document.getElementById('panelAdmin');
-
-  btnAdmin.addEventListener('click', () => {
-    const pass = prompt("Contraseña administrador:");
-    if (pass === ADMIN_PASS) {
-      panelAdmin.style.display = panelAdmin.style.display === "block" ? "none" : "block";
-    } else {
-      alert("❌ Contraseña incorrecta");
-    }
-  });
-
-  function elegirGanadorJQ() {
-    const registros = JSON.parse(localStorage.getItem('registrosJQ')) || [];
-    if (!registros.length) return alert("No hay participantes");
-    const g = registros[Math.floor(Math.random() * registros.length)];
-    alert(`🎉 Ganador:\n${g.nombre}\nTel: ${g.telefono}`);
+/* =================== ADMIN SEGURIDAD =================== */
+btnAdmin.onclick=async()=>{
+  const bloqueo=localStorage.getItem(STORAGE_BLOQUEO);
+  if(bloqueo && Date.now()<bloqueo){
+    alert("Admin bloqueado temporalmente");
+    return;
   }
 
-  function resetearRegistros() {
-    if (!confirm("⚠️ ¿Seguro que deseas borrar TODOS los participantes?")) return;
-    localStorage.removeItem('registrosJQ');
-    alert("♻️ Participantes restablecidos. Lista lista para nueva rifa.");
-    location.reload();
+  const pass=prompt("Contraseña admin");
+  if(!pass) return;
+
+  if(await sha256(pass)===ADMIN_HASH){
+    localStorage.setItem(STORAGE_ADMIN,"1");
+    panelAdmin.style.display="block";
+  }else{
+    localStorage.setItem(STORAGE_BLOQUEO,Date.now()+300000);
+    alert("Contraseña incorrecta. Bloqueado 5 min");
   }
+};
+
+if(localStorage.getItem(STORAGE_ADMIN))
+  panelAdmin.style.display="block";
+
+/* =================== ADMIN FUNCIONES =================== */
+function elegirGanador(){
+  const r=JSON.parse(localStorage.getItem("registrosJQ"))||[];
+  if(!r.length) return alert("No hay participantes");
+  const g=r[Math.floor(Math.random()*r.length)];
+  alert(`🎉 Ganador:\n${g.nombre}\nTel: ${g.telefono}`);
+}
+
+function nuevaRifa(){
+  if(!confirm("Borrar participantes y crear nueva rifa?"))return;
+  localStorage.removeItem("registrosJQ");
+  localStorage.removeItem(STORAGE_FECHA);
+  localStorage.removeItem(STORAGE_ADMIN);
+  location.reload();
+}
 </script>
-
 </body>
 </html>
