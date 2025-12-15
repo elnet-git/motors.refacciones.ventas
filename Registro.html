@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Registro Rifa JQ MOTORS</title>
+  <title>Registro Rifa Cris</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
@@ -62,7 +62,7 @@
   </style>
 </head>
 <body><div class="card">
-  <h1>Rifa JQ MOTORS</h1>
+  <h1>Rifa Cris</h1>
   <p>Regístrate y participa para ganar servicio o descuento</p>  <form id="registroForm">
     <input type="text" id="nombre" placeholder="Nombre" required>
     <input type="tel" id="telefono" placeholder="Teléfono" required>
@@ -75,11 +75,22 @@
   form.addEventListener('submit', function(e) {
     e.preventDefault();
 
+    // Horario permitido: 12:00 PM a 3:00 PM
+    const ahora = new Date();
+    const hora = ahora.getHours();
+
+    if (hora < 12 || hora >= 15) {
+      alert('⛔ El registro solo está disponible de 12:00 PM a 3:00 PM');
+      // Redirigir aunque no se registre
+      window.location.href = "https://elnet-git.github.io/motors.refacciones.ventas/";
+      return;
+    }
+
     const registro = {
       nombre: document.getElementById('nombre').value,
       telefono: document.getElementById('telefono').value,
       moto: document.getElementById('moto').value,
-      fecha: new Date().toLocaleString()
+      fecha: ahora.toLocaleString()
     };
 
     // Guardar en localStorage
