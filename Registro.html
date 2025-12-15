@@ -68,7 +68,9 @@
     <input type="tel" id="telefono" placeholder="Teléfono" required>
     <input type="text" id="moto" placeholder="Moto / Modelo (opcional)">
     <button type="submit">Participar</button>
-  </form>  <div class="small">Al registrarte aceptas ser contactado</div>
+  </form>  <!-- Botón visible solo para administrador --><button id="btnGanador" style="margin-top:15px; background:#ff9800;">Elegir ganador (Admin)</button>
+
+  <div class="small">Al registrarte aceptas ser contactado</div>
 </div><script>
   const form = document.getElementById('registroForm');
 
@@ -130,7 +132,29 @@
   });
 
   // Función para elegir ganador (ejecutar desde consola)
-  window.elegirGanadorJQ = function() {
+  // Función para elegir ganador
+  function elegirGanadorJQ() {
+    const registros = JSON.parse(localStorage.getItem('registrosJQ')) || [];
+    if (registros.length === 0) {
+      alert('No hay participantes');
+      return;
+    }
+    const ganador = registros[Math.floor(Math.random() * registros.length)];
+    alert(`🎉 Ganador Rifa JQ:
+${ganador.nombre}
+Tel: ${ganador.telefono}`);
+  }
+
+  // Botón admin
+  const btnGanador = document.getElementById('btnGanador');
+  btnGanador.addEventListener('click', () => {
+    const pass = prompt('Contraseña administrador');
+    if (pass === 'JQ2025') {
+      elegirGanadorJQ();
+    } else {
+      alert('❌ Contraseña incorrecta');
+    }
+  });() {
     const registros = JSON.parse(localStorage.getItem('registrosJQ')) || [];
     if (registros.length === 0) {
       alert('No hay participantes');
