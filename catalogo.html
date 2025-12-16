@@ -63,11 +63,6 @@ h1,h2{
   color:var(--guinda);
 }
 
-.info p{
-  margin:4px 0 0;
-  font-size:.85rem;
-}
-
 .hidden{display:none}
 
 button.back{
@@ -83,6 +78,34 @@ button.back{
 }
 button.back:hover{
   background:var(--guinda-osc);
+}
+
+/* ======================
+   VISOR PANTALLA COMPLETA
+   ====================== */
+#visor{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.92);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:999;
+}
+
+#visor img{
+  max-width:95%;
+  max-height:95%;
+  object-fit:contain;
+}
+
+#visor span{
+  position:absolute;
+  top:20px;
+  right:30px;
+  font-size:32px;
+  color:white;
+  cursor:pointer;
 }
 </style>
 </head>
@@ -104,16 +127,15 @@ button.back:hover{
   <div class="grid" id="sistemasGrid"></div>
 </section>
 
-<!-- NIVEL 3 -->
-<section id="nivel3" class="hidden">
-  <button class="back" onclick="volverNivel2()">← Volver a sistemas</button>
-  <h2 id="sistemaTitulo"></h2>
-  <div class="grid" id="refaccionesGrid"></div>
-</section>
+<!-- VISOR -->
+<div id="visor" onclick="cerrarVisor()">
+  <span>✕</span>
+  <img id="visorImg">
+</div>
 
 <script>
 // =====================
-// MOTOS (NIVEL 1)
+// MOTOS
 // =====================
 const motos = [
  {id:"AV220", nombre:"Bajaj Avenger Cruise 220 2025", img:"images/motos/avenger220.png"},
@@ -135,51 +157,31 @@ const motos = [
  {id:"DOM400UG", nombre:"Dominar 400 UG Touring 2025", img:"images/motos/dominar400ug.png"},
  {id:"NS400Z", nombre:"Pulsar NS 400Z 2025", img:"images/motos/ns400z.png"}
 ];
+
 // =====================
-// SISTEMAS (NIVEL 2)
+// SISTEMAS
 // =====================
 const sistemas = [
  {id:"motor", nombre:"Motor", img:"images/sistemas/motor.png"},
- {id:"frenos", nombre:"Frenos", img:"images/sistemas/frenos.png"},
- {id:"electrico", nombre:"Sistema Eléctrico", img:"images/sistemas/electrico.png"},
+ {id:"frenos", nombre:"Frenos y tanque de gasolina",img:"images/sistemas/frenos.png"},
+ {id:"electrico", nombre:"Sistema Eléctrico y Parabrisas",img:"images/sistemas/electrico.png"},
  {id:"suspension", nombre:"Suspensión", img:"images/sistemas/suspension.png"},
  {id:"carroceria", nombre:"Carrocería", img:"images/sistemas/carroceria.png"},
  {id:"llantas", nombre:"Llantas y Rines", img:"images/sistemas/llantas.png"},
  {id:"transmision", nombre:"Transmisión", img:"images/sistemas/transmision.png"}
 ];
 
-// =====================
-// DESPIECE (NIVEL 3)
-// =====================
-const despiece = {
- DOM400:{
-   motor:[
-     {codigo:"PST-400", nombre:"Pistón", img:"images/refacciones/piston.png"},
-     {codigo:"CIL-400", nombre:"Cilindro", img:"images/refacciones/cilindro.png"}
-   ],
-   frenos:[
-     {codigo:"BAL-400", nombre:"Balata", img:"images/refacciones/balata.png"},
-     {codigo:"BOM-400", nombre:"Bomba de freno", img:"images/refacciones/bomba.png"}
-   ]
- }
-};
-
-// =====================
-// LÓGICA
-// =====================
 const motosGrid = document.getElementById("motosGrid");
 const sistemasGrid = document.getElementById("sistemasGrid");
-const refaccionesGrid = document.getElementById("refaccionesGrid");
 
 let motoSel = null;
-let sistemaSel = null;
 
 // NIVEL 1
 motos.forEach(m=>{
   const c=document.createElement("div");
   c.className="card";
   c.innerHTML=`
-    <img src="${m.img}" onerror="this.onerror=null;this.src='images/placeholder.png'">
+    <img src="${m.img}" onerror="this.src='images/placeholder.png'">
     <div class="info"><h3>${m.nombre}</h3></div>
   `;
   c.onclick=()=>abrirSistemas(m);
@@ -198,10 +200,10 @@ function abrirSistemas(moto){
     const c=document.createElement("div");
     c.className="card";
     c.innerHTML=`
-      <img src="${s.img}" onerror="this.onerror=null;this.src='images/placeholder.png'">
+      <img src="${s.img}" onerror="this.src='images/placeholder.png'">
       <div class="info"><h3>${s.nombre}</h3></div>
     `;
-    c.onclick=()=>abrirRefacciones(s);
+    c.onclick=()=>abrirVisor(s.img);
     sistemasGrid.appendChild(c);
   });
 }
@@ -211,38 +213,14 @@ function volverNivel1(){
   nivel1.classList.remove("hidden");
 }
 
-// NIVEL 3
-function abrirRefacciones(s){
-  sistemaSel = s;
-  nivel2.classList.add("hidden");
-  nivel3.classList.remove("hidden");
-  sistemaTitulo.innerText = motoSel.nombre + " – " + s.nombre;
-  refaccionesGrid.innerHTML="";
-
-  const piezas = despiece[motoSel.id]?.[s.id] || [];
-
-  if(!piezas.length){
-    refaccionesGrid.innerHTML="<p style='text-align:center'>No hay refacciones cargadas.</p>";
-    return;
-  }
-
-  piezas.forEach(p=>{
-    const c=document.createElement("div");
-    c.className="card";
-    c.innerHTML=`
-      <img src="${p.img}" onerror="this.onerror=null;this.src='images/placeholder.png'">
-      <div class="info">
-        <h3>${p.codigo}</h3>
-        <p>${p.nombre}</p>
-      </div>
-    `;
-    refaccionesGrid.appendChild(c);
-  });
+// VISOR
+function abrirVisor(img){
+  visorImg.src = img;
+  visor.style.display="flex";
 }
 
-function volverNivel2(){
-  nivel3.classList.add("hidden");
-  nivel2.classList.remove("hidden");
+function cerrarVisor(){
+  visor.style.display="none";
 }
 </script>
 
