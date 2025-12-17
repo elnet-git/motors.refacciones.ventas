@@ -2,25 +2,172 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Catálogo Refacciones Bajaj</title>
+<title>JQ Motors - Catálogo Refacciones Bajaj</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-:root{
-  --guinda:#7B1E1E;
-  --guinda-osc:#5a1414;
-  --fondo:#111;
+:root {
+  --guinda: #7B1E1E;
+  --guinda-osc: #5a1414;
+  --neon: #ff4d4d;
+  --neon-shadow: 0 0 5px var(--neon), 0 0 10px var(--neon), 0 0 20px var(--neon);
+  --fondo: #111;
+  --gris: #ccc;
 }
 
-body{
-  margin:0;
-  background:var(--fondo);
-  color:#eee;
-  font-family:Montserrat,Arial;
+/* ================= NAVBAR ================= */
+body {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  background: var(--fondo);
+  color: #eee;
 }
 
-h1,h2{
+header.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--guinda);
+  padding: 10px 18px;
+  position: sticky;
+  top: 0;
+  z-index: 1100;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.45);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo img {
+  height: 64px;
+}
+
+.logo h1 {
+  margin: 0;
+  font-size: 1rem;
+  color: #fff;
+  letter-spacing: 1px;
+  text-shadow: var(--neon-shadow);
+}
+
+/* NAV MENU */
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  transition: max-height 0.35s ease;
+}
+
+nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+nav a.active {
+  background: var(--guinda-osc);
+  box-shadow: var(--neon-shadow);
+}
+
+nav a:hover {
+  transform: translateY(-2px);
+  background: var(--guinda-osc);
+  box-shadow: var(--neon-shadow);
+  color: var(--neon);
+}
+
+/* HAMBURGER */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 28px;
+  height: 22px;
+  cursor: pointer;
+}
+
+.hamburger span {
+  display: block;
+  height: 4px;
+  width: 100%;
+  background: #fff;
+  border-radius: 4px;
+  transition: 0.3s;
+}
+
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* RESPONSIVE */
+@media(max-width: 900px) {
+  nav ul {
+    position: absolute;
+    top: 70px;
+    right: 0;
+    background: var(--guinda);
+    flex-direction: column;
+    width: 200px;
+    max-height: 0;
+    overflow: hidden;
+    border-radius: 0 0 12px 12px;
+  }
+
+  nav ul.show {
+    max-height: 500px;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+}
+
+/* ================= CONTENIDO CATALOGO ================= */
+header.page-header {
   text-align:center;
+  padding:20px;
+}
+
+header.page-header h1{
+  margin:0;
+  font-size:2rem;
+  color:#fff;
+}
+
+.search-container{
+  text-align:center;
+  margin:20px;
+}
+
+.search-container input{
+  padding:10px 15px;
+  width:250px;
+  border-radius:8px;
+  border:none;
+  outline:none;
+  font-size:1rem;
+}
+
+h2{
+  text-align:center;
+  margin:10px 0;
   color:#fff;
 }
 
@@ -52,6 +199,11 @@ h1,h2{
   height:180px;
   object-fit:contain;
   background:#f4f4f4;
+}
+
+#nivelSistemas .card img{
+  height:300px;
+  object-fit:contain;
 }
 
 .card p{
@@ -91,12 +243,17 @@ h1,h2{
   justify-content:center;
   align-items:center;
   z-index:999;
+  overflow:hidden;
 }
 
 .overlay img{
+  width:auto;
+  height:auto;
   max-width:95%;
   max-height:95%;
   object-fit:contain;
+  transition: all 0.3s ease;
+  cursor:grab;
 }
 
 .overlay span{
@@ -106,13 +263,42 @@ h1,h2{
   font-size:32px;
   color:#fff;
   cursor:pointer;
+  z-index:1000;
 }
 </style>
 </head>
-
 <body>
 
-<h1>Catálogo de Refacciones Bajaj</h1>
+<!-- NAVBAR -->
+<header class="navbar neon-soft">
+  <div class="logo">
+    <img src="images/logo/logo.png" alt="Logo">
+    <h1>JQ RODANDO MOMENTOS</h1>
+  </div>
+  <nav>
+    <div class="hamburger" onclick="toggleMenu(this)">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <ul id="menu">
+      <li><a href="index.html" class="active">Inicio</a></li>
+      <li><a href="catalogo.html">Catálogo</a></li>
+      <li><a href="promociones.html">Promociones</a></li>
+      <li><a href="pizarron.html">Pizarrón</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- TÍTULO -->
+<header class="page-header">
+  <h1>JQ Motors - Catálogo de Refacciones Bajaj</h1>
+</header>
+
+<!-- BUSCADOR -->
+<div class="search-container">
+  <input type="text" id="buscador" placeholder="Buscar moto...">
+</div>
 
 <!-- NIVEL 1 -->
 <section id="nivelMotos">
@@ -134,97 +320,217 @@ h1,h2{
 </div>
 
 <script>
-/* =====================
-   CATÁLOGO
-===================== */
-const catalogo = {
-  AV220:{
-    nombre:"Avenger 220",
-    img:"motos/avenger220.png",
-    sistemas:[
-      "carenado","cilindro","electrico","frenos",
-      "llantas","motor","suspension","transmision"
-    ]
-  },
-  BOX150:{
-    nombre:"Boxer 150",
-    img:"motos/boxer150.png",
-    sistemas:[
-      "carburador","carenado","electrico",
-      "llantas","motor","rin y frenos","suspension"
-    ]
-  },
-  DOM250:{
-    nombre:"Dominar 250",
-    img:"motos/dominar250.png",
-    sistemas:[
-      "cabeza y valvulas","carenado y sis. electrico",
-      "chasis y suspencion","cilindro",
-      "cuerpo de aceleracion","direccionales y arnes",
-      "llantas","motor y pedal de cambios",
-      "radiador","sistema de frenado y mando"
-    ]
-  },
-  N125:{
-    nombre:"Pulsar N125",
-    img:"motos/n125.png",
-    sistemas:[
-      "arbol de levas","cabeza","carenado","carter",
-      "chasis","cigueñal","cilindro","clucht",
-      "electrico","faro","llantas","mando",
-      "pedal de arranque","posapies","salpicaderas",
-      "suspencion","tambor","transmicion","valvulas"
-    ]
-  },
-  N160:{
-    nombre:"Pulsar N160",
-    img:"motos/n160.png",
-    sistemas:[
-      "cabeza","carenado y velocimetro",
-      "chasis, llantas, posapies",
-      "cilindro","electrico",
-      "frenado, tanque y mando"
-    ]
-  },
-  N250C:{
-    nombre:"Pulsar N250",
-    img:"motos/n250c.png",
-    sistemas:[
-      "arbol de levas","barras","cabeza de cilindro",
-      "cabeza","carburador","carenado trasero",
-      "carenado","carter","chasis","cigueñal",
-      "cilindro","electrico","escape","estator",
-      "faro","filtro de aire","mando",
-      "parador lateral y central",
-      "pedal de cambios","pedal de freno",
-      "porta placa","radiador","rin y llantas",
-      "salpicaderas","sist. frenado",
-      "suspencion","tablero","tambor",
-      "tanque","transmision","valvulas"
-    ]
-  },
-  PLA100:{
-    nombre:"Platina 100",
-    img:"motos/platina100.png",
-    sistemas:[
-      "cabeza y valvulas","carburador y cluch",
-      "chasis","cilindro cigueñal y transmicion",
-      "frenos y mando","motor y tambor"
-    ]
-  },
+/* ===================== NAVBAR TOGGLE ===================== */
+function toggleMenu(x) {
+  const menu = document.getElementById('menu');
+  menu.classList.toggle('show');
+  x.classList.toggle('active');
+}
 
-  /* ===== MOTOS SIN SISTEMAS AÚN ===== */
-  NS125:{nombre:"Pulsar NS 125",img:"motos/ns125.png",sistemas:[]},
-  NS160:{nombre:"Pulsar NS 160",img:"motos/ns160.png",sistemas:[]},
-  NS200:{nombre:"Pulsar NS 200",img:"motos/ns200.png",sistemas:[]},
-  RS200:{nombre:"Pulsar RS 200",img:"motos/rs200.png",sistemas:[]},
-  DOM400UG:{nombre:"Dominar 400 UG",img:"motos/dominar400ug.png",sistemas:[]},
-  NS400Z:{nombre:"Pulsar NS 400Z",img:"motos/ns400z.png",sistemas:[]}
+/* ===================== CATÁLOGO ===================== */
+const catalogo = {
+  AV220: {
+    nombre: "Avenger 220",
+    img: "images/motos/avenger220.png",
+    sistemas: [
+      {nombre:"carenado", img:"images/sistemas/AV220/carenado.png"},
+      {nombre:"cilindro", img:"images/sistemas/AV220/cilindro.png"},
+      {nombre:"electrico", img:"images/sistemas/AV220/electrico.png"},
+      {nombre:"frenos", img:"images/sistemas/AV220/frenos.png"},
+      {nombre:"llantas", img:"images/sistemas/AV220/llantas.png"},
+      {nombre:"motor", img:"images/sistemas/AV220/motor.png"},
+      {nombre:"suspension", img:"images/sistemas/AV220/suspension.png"},
+      {nombre:"transmision", img:"images/sistemas/AV220/transmision.png"}
+    ]
+  },
+  BOX150: {
+    nombre: "Boxer 150",
+    img: "images/motos/boxer150.png",
+    sistemas: [
+      {nombre:"carburador", img:"images/sistemas/BOX150/carburador.png"},
+      {nombre:"carenado", img:"images/sistemas/BOX150/carenado.png"},
+      {nombre:"electrico", img:"images/sistemas/BOX150/electrico.png"},
+      {nombre:"llantas", img:"images/sistemas/BOX150/llantas.png"},
+      {nombre:"motor", img:"images/sistemas/BOX150/motor.png"},
+      {nombre:"rin y frenos", img:"images/sistemas/BOX150/rin%20y%20frenos.png"},
+      {nombre:"suspension", img:"images/sistemas/BOX150/suspension.png"}
+    ]
+  },
+  DOM250: {
+    nombre: "Dominar 250",
+    img: "images/motos/dominar250.png",
+    sistemas: [
+      {nombre:"cabeza y valvulas", img:"images/sistemas/DOM250/cabeza%20y%20valvulas.png"},
+      {nombre:"carenado y sis. electrico", img:"images/sistemas/DOM250/carenado%20y%20sis.%20electrico.png"},
+      {nombre:"chasis y suspencion", img:"images/sistemas/DOM250/chasis%20y%20suspencion.png"},
+      {nombre:"cilindro", img:"images/sistemas/DOM250/cilindro.png"},
+      {nombre:"cuerpo de aceleracion", img:"images/sistemas/DOM250/cuerpo%20de%20aceleracion.png"},
+      {nombre:"direccionales y arnes", img:"images/sistemas/DOM250/direccionales%20y%20arnes.png"},
+      {nombre:"llantas", img:"images/sistemas/DOM250/llantas.png"},
+      {nombre:"motor y pedal de cambios", img:"images/sistemas/DOM250/motor%20y%20pedal%20de%20cambios.png"},
+      {nombre:"radiador", img:"images/sistemas/DOM250/radiador.png"},
+      {nombre:"sistema de frenado y mando", img:"images/sistemas/DOM250/sistema%20de%20frenado%20y%20mando.png"}
+    ]
+  },
+DOM400: {
+  nombre: "Dominar 400",
+  img: "images/motos/dom400-agua.png",
+  sistemas: [
+    { nombre:"cabeza", img:"images/sistemas/DOM400/cabeza.png" }
+  ]
+},
+
+DOM400A: {
+  nombre: "Dominar 400 Aire",
+  img: "images/motos/dom400-agua.png",
+  sistemas: [
+    { nombre:"cabeza", img:"images/sistemas/DOM400/cabeza.png" }
+  ]
+},
+
+DOM400F: {
+  nombre: "Dominar 400 Fuego",
+  img: "images/motos/dom400-agua.png",
+  sistemas: [
+    { nombre:"cabeza", img:"images/sistemas/DOM400/cabeza.png" }
+  ]
+},
+
+DOM400T: {
+  nombre: "Dominar 400 Tierra",
+  img: "images/motos/dom400-agua.png",
+  sistemas: [
+    { nombre:"cabeza", img:"images/sistemas/DOM400/cabeza.png" }
+  ]
+},
+
+DOM400UG: {
+  nombre: "Dominar 400 UG",
+  img: "images/motos/dom400-agua.png",
+  sistemas: [
+    { nombre:"cabeza", img:"images/sistemas/DOM400/cabeza.png" }
+  ]
+},
+  
+  N125: {
+    nombre: "Pulsar N125",
+    img: "images/motos/n125.png",
+    sistemas: [
+      {nombre:"arbol de levas", img:"images/sistemas/N125/arbol%20de%20levas.png"},
+      {nombre:"cabeza", img:"images/sistemas/N125/cabeza.png"},
+      {nombre:"carenado", img:"images/sistemas/N125/carenado.png"},
+      {nombre:"carter", img:"images/sistemas/N125/carter.png"},
+      {nombre:"chasis", img:"images/sistemas/N125/chasis.png"},
+      {nombre:"cigueñal", img:"images/sistemas/N125/cigueñal.png"},
+      {nombre:"cilindro", img:"images/sistemas/N125/cilindro.png"},
+      {nombre:"clucht", img:"images/sistemas/N125/clucht.png"},
+      {nombre:"electrico", img:"images/sistemas/N125/electrico.png"},
+      {nombre:"faro", img:"images/sistemas/N125/faro.png"},
+      {nombre:"llantas", img:"images/sistemas/N125/llantas.png"},
+      {nombre:"mando", img:"images/sistemas/N125/mando.png"},
+      {nombre:"pedal de arranque", img:"images/sistemas/N125/pedal%20de%20arranque.png"},
+      {nombre:"posapies", img:"images/sistemas/N125/posapies.png"},
+      {nombre:"salpicaderas", img:"images/sistemas/N125/salpicaderas.png"},
+      {nombre:"suspencion", img:"images/sistemas/N125/suspencion.png"},
+      {nombre:"tambor", img:"images/sistemas/N125/tambor.png"},
+      {nombre:"transmicion", img:"images/sistemas/N125/transmicion.png"},
+      {nombre:"valvulas", img:"images/sistemas/N125/valvulas.png"}
+    ]
+  },
+  N160: {
+    nombre:"Pulsar N160",
+    img:"images/motos/n160.png",
+    sistemas:[
+      {nombre:"cabeza", img:"images/sistemas/N160/cabeza.png"},
+      {nombre:"carenado y velocimetro", img:"images/sistemas/N160/carenado%20y%20velocimetro.png"},
+      {nombre:"chasis, llantas, posapies", img:"images/sistemas/N160/chasis,%20llantas,%20posapies.png"},
+      {nombre:"cilindro", img:"images/sistemas/N160/cilindro.png"},
+      {nombre:"electrico", img:"images/sistemas/N160/electrico.png"},
+      {nombre:"frenado, tanque y mando", img:"images/sistemas/N160/frenado,%20tanque%20y%20mando.png"}
+    ]
+  },
+  N250C: {
+    nombre:"Pulsar N250",
+    img:"images/motos/n250c.png",
+    sistemas:[
+      {nombre:"arbol de levas", img:"images/sistemas/N250C/arbol%20de%20levas.png"},
+      {nombre:"barras", img:"images/sistemas/N250C/barras.png"},
+      {nombre:"cabeza de cilindro", img:"images/sistemas/N250C/cabeza%20de%20cilindro.png"},
+      {nombre:"cabeza", img:"images/sistemas/N250C/cabeza.png"},
+      {nombre:"carburador", img:"images/sistemas/N250C/carburador.png"},
+      {nombre:"carenado trasero", img:"images/sistemas/N250C/carenado%20trasero.png"},
+      {nombre:"carenado", img:"images/sistemas/N250C/carenado.png"},
+      {nombre:"carter", img:"images/sistemas/N250C/carter.png"},
+      {nombre:"chasis", img:"images/sistemas/N250C/chasis.png"},
+      {nombre:"cigueñal", img:"images/sistemas/N250C/cigueñal.png"},
+      {nombre:"cilindro", img:"images/sistemas/N250C/cilindro.png"},
+      {nombre:"electrico", img:"images/sistemas/N250C/electrico.png"},
+      {nombre:"escape", img:"images/sistemas/N250C/escape.png"},
+      {nombre:"estator", img:"images/sistemas/N250C/estator.png"},
+      {nombre:"faro", img:"images/sistemas/N250C/faro.png"},
+      {nombre:"filtro de aire", img:"images/sistemas/N250C/filtro%20de%20aire.png"},
+      {nombre:"mando", img:"images/sistemas/N250C/mando.png"},
+      {nombre:"parador lateral y central", img:"images/sistemas/N250C/parador%20lateral%20y%20central.png"},
+      {nombre:"pedal de cambios", img:"images/sistemas/N250C/pedal%20de%20cambios.png"},
+      {nombre:"pedal de freno", img:"images/sistemas/N250C/pedal%20de%20freno.png"},
+      {nombre:"porta placa", img:"images/sistemas/N250C/porta%20placa.png"},
+      {nombre:"radiador", img:"images/sistemas/N250C/radiador.png"},
+      {nombre:"rin y llantas", img:"images/sistemas/N250C/rin%20y%20llantas.png"},
+      {nombre:"salpicaderas", img:"images/sistemas/N250C/salpicaderas.png"},
+      {nombre:"sist. frenado", img:"images/sistemas/N250C/sist.%20frenado.png"},
+      {nombre:"suspencion", img:"images/sistemas/N250C/suspencion.png"},
+      {nombre:"tablero", img:"images/sistemas/N250C/tablero.png"},
+      {nombre:"tambor", img:"images/sistemas/N250C/tambor.png"},
+      {nombre:"tanque", img:"images/sistemas/N250C/tanque.png"},
+      {nombre:"transmision", img:"images/sistemas/N250C/transmision.png"},
+      {nombre:"valvulas", img:"images/sistemas/N250C/valvulas.png"}
+    ]
+  },
+  N250FI: {
+    nombre: "Pulsar N250 FI",
+    img: "images/motos/n250fi.png",
+    sistemas: [
+      { nombre:"motor", img:"images/sistemas/N250C/motor.png" },
+      { nombre:"electrico", img:"images/sistemas/N250C/electrico.png" },
+      { nombre:"frenos", img:"images/sistemas/N250C/sist.%20frenado.png" }
+    ]
+  },
+  NS125: {
+    nombre:"Pulsar NS125",
+    img:"images/motos/ns125.png",
+    sistemas:[
+      {nombre:"cabeza", img:"images/sistemas/NS125/cabeza.png"},
+      {nombre:"cigueñal", img:"images/sistemas/NS125/cigueñal.png"},
+      {nombre:"cilindro", img:"images/sistemas/NS125/cilindro.png"},
+      {nombre:"transmision", img:"images/sistemas/NS125/transmision.png"},
+      {nombre:"valvulas", img:"images/sistemas/NS125/valvulas.png"}
+    ]
+  },
+  NS160: { nombre:"Pulsar NS160", img:"images/motos/ns160.png", sistemas:[{nombre:"cabeza", img:"images/sistemas/NS160/cabeza.png"}]},
+  NS200: { nombre:"Pulsar NS200", img:"images/motos/ns200.png", sistemas:[{nombre:"cabeza", img:"images/sistemas/NS200/cabeza.png"}]},
+  NS400Z: { nombre:"Pulsar NS400Z", img:"images/motos/ns400z.png", sistemas:[{nombre:"cabeza", img:"images/sistemas/NS400Z/cabeza.png"}]},
+  PLA100: {
+    nombre:"Platina 100",
+    img:"images/motos/platina100.png",
+    sistemas:[
+      {nombre:"cabeza y valvulas", img:"images/sistemas/PLA100/cabeza%20y%20valvulas.png"},
+      {nombre:"carburador y cluch", img:"images/sistemas/PLA100/carburador%20y%20cluch.png"},
+      {nombre:"chasis", img:"images/sistemas/PLA100/chasis.png"},
+      {nombre:"cilindro cigueñal y transmicion", img:"images/sistemas/PLA100/cilindro%20cigueñal%20y%20transmicion.png"},
+      {nombre:"frenos y mando", img:"images/sistemas/PLA100/frenos%20y%20mando.png"},
+      {nombre:"motor y tambor", img:"images/sistemas/PLA100/motor%20y%20tambor.png"}
+    ]
+  },
+RS200: {
+  nombre:"Pulsar RS200",
+  img:"images/motos/rs200.png",
+  sistemas:[
+    {nombre:"cabeza", img:"images/sistemas/RS200/cabeza.png"}
+  ]
+}
 };
 
-/* =====================
-   REFERENCIAS
-===================== */
+/* ===================== REFERENCIAS ===================== */
 const gridMotos = document.getElementById("gridMotos");
 const gridSistemas = document.getElementById("gridSistemas");
 const nivelMotos = document.getElementById("nivelMotos");
@@ -233,22 +539,21 @@ const tituloSistemas = document.getElementById("tituloSistemas");
 const overlay = document.getElementById("overlay");
 const imgFull = document.getElementById("imgFull");
 
-/* =====================
-   FUNCIONES
-===================== */
-function cargarMotos(){
+let scale = 1;
+
+/* ===================== FUNCIONES ===================== */
+function cargarMotos(filter=""){
   gridMotos.innerHTML="";
   nivelMotos.classList.remove("hidden");
   nivelSistemas.classList.add("hidden");
 
   Object.keys(catalogo).forEach(id=>{
     const m = catalogo[id];
+    if(filter && !m.nombre.toLowerCase().includes(filter.toLowerCase())) return;
+
     const c = document.createElement("div");
     c.className="card";
-    c.innerHTML=`
-      <img src="${m.img}" onerror="this.src='placeholder.png'">
-      <p>${m.nombre}</p>
-    `;
+    c.innerHTML=`<img src="${m.img}"><p>${m.nombre}</p>`;
     c.onclick=()=>cargarSistemas(id);
     gridMotos.appendChild(c);
   });
@@ -261,41 +566,39 @@ function cargarSistemas(id){
   nivelSistemas.classList.remove("hidden");
   tituloSistemas.textContent = moto.nombre;
 
-  if(moto.sistemas.length===0){
-    gridSistemas.innerHTML =
-      "<p style='grid-column:1/-1;text-align:center;font-size:18px'>🚧 Próximamente</p>";
+  if(!moto.sistemas || moto.sistemas.length===0){
+    gridSistemas.innerHTML="<p style='grid-column:1/-1;text-align:center;font-size:18px'>🚧 Próximamente</p>";
     return;
   }
 
-  moto.sistemas.forEach(nombre=>{
-    const ruta = `sistemas/${id}/${nombre}.png`;
+  moto.sistemas.forEach(sistema=>{
+    const ruta = sistema.img; // ya viene correcto desde el JSON
     const c = document.createElement("div");
     c.className="card";
-    c.innerHTML=`
-      <img src="${ruta}" onclick="verImagen('${ruta}')" onerror="this.src='placeholder.png'">
-      <p>${nombre}</p>
-    `;
+    c.innerHTML=`<img src="${ruta}" onclick="verImagen('${ruta}')"><p>${sistema.nombre}</p>`;
     gridSistemas.appendChild(c);
-  });
+});
+
 }
 
-function volverMotos(){
-  cargarMotos();
-}
+function volverMotos(){ cargarMotos(); }
+function verImagen(src){ overlay.style.display="flex"; imgFull.src=src; scale=1; imgFull.style.transform=`scale(${scale})`; }
+function cerrarImagen(){ overlay.style.display="none"; imgFull.src=""; scale=1; imgFull.style.transform=`scale(${scale})`; }
 
-function verImagen(src){
-  imgFull.src = src;
-  overlay.style.display="flex";
-}
+/* ZOOM CON RUEDA DEL MOUSE */
+overlay.addEventListener("wheel", function(e){
+  if(overlay.style.display === "flex"){
+    e.preventDefault();
+    scale += e.deltaY * -0.0015;
+    scale = Math.min(Math.max(.5, scale), 3);
+    imgFull.style.transform = `scale(${scale})`;
+  }
+});
 
-function cerrarImagen(){
-  overlay.style.display="none";
-  imgFull.src="";
-}
+/* BUSCADOR */
+document.getElementById("buscador").addEventListener("input", e=>{ cargarMotos(e.target.value); });
 
-/* =====================
-   INICIO
-===================== */
+/* INICIO */
 cargarMotos();
 </script>
 
