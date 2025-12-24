@@ -4,153 +4,68 @@
 <meta charset="UTF-8">
 <title>JQ Motors | Catálogo Refacciones</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600;800&display=swap" rel="stylesheet">
 
 <style>
 :root{
   --guinda:#7B1E1E;
   --guinda-osc:#5a1414;
-  --neon:#ff4d4d;
-  --neon-shadow:0 0 5px var(--neon),0 0 10px var(--neon),0 0 20px var(--neon);
   --fondo:#111;
 }
-
 body{
   margin:0;
   font-family:'Montserrat',sans-serif;
   background:var(--fondo);
   color:#eee;
 }
-
 header{
   background:var(--guinda);
-  padding:10px 20px;
-  box-shadow:0 4px 18px rgba(0,0,0,.5);
-}
-
-header h1{
-  margin:0;
-  text-shadow:var(--neon-shadow);
-}
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-  gap:20px;
-  padding:20px;
-}
-
-.card{
-  background:#fff;
-  border-radius:14px;
-  overflow:hidden;
-  cursor:pointer;
-  transition:.25s;
-}
-
-.card:hover{
-  transform:translateY(-6px);
-  box-shadow:var(--neon-shadow);
-}
-
-.card img{
-  width:100%;
-  height:160px;
-  object-fit:contain;
-  background:#f4f4f4;
-}
-
-.card p{
-  text-align:center;
-  font-weight:700;
-  color:var(--guinda);
-}
-
-.hidden{display:none}
-
-/* OVERLAY */
-.overlay{
-  position:fixed;
-  inset:0;
-  background:#000d;
-  display:none;
-  z-index:2000;
-}
-
-.overlay-content{
+  padding:10px 18px;
   display:flex;
-  height:100%;
+  justify-content:space-between;
+  align-items:center;
 }
-
-.img-zone{
-  flex:2;
-  position:relative;
+header h1{margin:0;font-size:18px}
+button,select{
+  padding:6px 10px;
+  border-radius:6px;
+  border:none;
+  font-weight:600;
 }
-
-#imgBase{
-  width:100%;
-  height:100%;
-  object-fit:contain;
+button{
+  background:#000;
+  color:#fff;
+  cursor:pointer;
 }
-
-canvas{
-  position:absolute;
-  inset:0;
-}
-
-.data{
-  flex:1;
-  background:#111;
+button:hover{background:var(--guinda-osc)}
+main{
+  display:grid;
+  grid-template-columns:1fr 420px;
+  gap:14px;
   padding:14px;
-  overflow:auto;
-  border-left:2px solid #333;
 }
-
+canvas{
+  width:100%;
+  height:auto;
+  border:2px solid var(--guinda);
+  border-radius:12px;
+  background:#000;
+}
 table{
   width:100%;
   border-collapse:collapse;
+}
+th,td{
+  padding:6px;
+  border-bottom:1px solid #333;
   font-size:14px;
 }
-
-td,th{
-  border-bottom:1px solid #333;
-  padding:6px;
+tr.sel{
+  background:#003b3b;
+  color:#00ffff;
 }
-
-.admin-btn{
-  width:100%;
-  padding:10px;
-  margin-top:8px;
-  border:none;
-  border-radius:8px;
-  background:var(--guinda);
-  color:#fff;
-  font-weight:700;
-  cursor:pointer;
-}
-
-.admin-btn:hover{
-  background:var(--guinda-osc);
-  box-shadow:var(--neon-shadow);
-}
-
-.gray{background:#444}
-
-input{
-  width:100%;
-  padding:8px;
-  margin-bottom:6px;
-  border-radius:6px;
-  border:none;
-}
-
-.close{
-  position:absolute;
-  top:10px;
-  right:20px;
-  font-size:30px;
-  cursor:pointer;
+td[contenteditable="true"]{
+  background:#111;
 }
 </style>
 </head>
@@ -158,169 +73,283 @@ input{
 <body>
 
 <header>
-  <h1>JQ MOTORS</h1>
+  <h1>🏍️ JQ MOTORS</h1>
+  <div>
+    <select id="motoSelect"></select>
+    <select id="sistemaSelect"></select>
+    <button id="adminBtn">ADMIN</button>
+  </div>
 </header>
 
-<section id="motos">
-  <div class="grid" id="gridMotos"></div>
-</section>
+<main>
+  <canvas id="canvas" width="900" height="600"></canvas>
 
-<section id="sistemas" class="hidden">
-  <button class="admin-btn" onclick="volver()">← Volver</button>
-  <h2 id="titulo" style="padding-left:20px"></h2>
-  <div class="grid" id="gridSistemas"></div>
-</section>
+  <table>
+    <thead>
+      <tr>
+        <th>Código</th>
+        <th>Descripción</th>
+        <th>Cant</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody id="tabla"></tbody>
+  </table>
+</main>
 
-<div class="overlay" id="overlay">
-  <span class="close" onclick="cerrar()">✕</span>
-  <div class="overlay-content">
-    <div class="img-zone">
-      <img id="imgBase">
-      <canvas id="canvas"></canvas>
-    </div>
-    <div class="data">
-      <h3>Piezas</h3>
-      <table>
-        <thead><tr><th>Código</th><th>Descripción</th><th>Cant.</th></tr></thead>
-        <tbody id="tabla"></tbody>
-      </table>
+<img id="imgSistema" style="display:none">
 
-      <div id="loginAdmin">
-        <input id="passAdmin" type="password" placeholder="Contraseña ADMIN">
-        <button class="admin-btn" onclick="loginAdmin()">Entrar ADMIN</button>
-      </div>
-
-      <button id="salirAdminBtn" class="admin-btn gray hidden" onclick="salirAdmin()">Salir ADMIN</button>
-
-      <div id="adminPanel" class="hidden">
-        <input id="codigo" placeholder="Código">
-        <input id="desc" placeholder="Descripción">
-        <input id="cant" placeholder="Cantidad">
-        <button class="admin-btn" onclick="guardarZona()">Guardar zona</button>
-      </div>
-    </div>
-  </div>
-</div>
+<!-- CAMBIA TU WHATSAPP -->
+<a id="waBase" href="https://wa.me/521XXXXXXXXXX"></a>
 
 <script>
-/* ================= CATÁLOGO ================= */
-const catalogo = /* 👇 TU CATÁLOGO TAL CUAL */ 
-<?js
-// (El navegador ignora esto, es solo para claridad aquí)
-?>
+/* ================= ADMIN ================= */
+const ADMIN_PASS="Neto30";
+let admin=false;
 
-/* ================= LÓGICA ================= */
-const gridMotos=document.getElementById("gridMotos");
-const gridSistemas=document.getElementById("gridSistemas");
-const tabla=document.getElementById("tabla");
-const imgBase=document.getElementById("imgBase");
-const overlay=document.getElementById("overlay");
+document.getElementById("adminBtn").onclick=()=>{
+  if(admin){
+    admin=false;
+    alert("Saliste de ADMIN");
+    renderTabla();
+  }else{
+    const p=prompt("Contraseña ADMIN:");
+    if(p===ADMIN_PASS){
+      admin=true;
+      alert("ADMIN activo");
+      renderTabla();
+    }else alert("Contraseña incorrecta");
+  }
+};
+
+/* ================= CATÁLOGO ================= */
+const catalogo={
+AV220:{nombre:"Avenger 220",img:"images/motos/avenger220.png",sistemas:[
+ {nombre:"carenado",img:"images/sistemas/AV220/carenado.png"},
+ {nombre:"cilindro",img:"images/sistemas/AV220/cilindro.png"},
+ {nombre:"electrico",img:"images/sistemas/AV220/electrico.png"},
+ {nombre:"frenos",img:"images/sistemas/AV220/frenos.png"},
+ {nombre:"llantas",img:"images/sistemas/AV220/llantas.png"},
+ {nombre:"motor",img:"images/sistemas/AV220/motor.png"},
+ {nombre:"suspension",img:"images/sistemas/AV220/suspension.png"},
+ {nombre:"transmision",img:"images/sistemas/AV220/transmision.png"}
+]},
+BOX150:{nombre:"Boxer 150",img:"images/motos/boxer150.png",sistemas:[
+ {nombre:"carburador",img:"images/sistemas/BOX150/carburador.png"},
+ {nombre:"carenado",img:"images/sistemas/BOX150/carenado.png"},
+ {nombre:"electrico",img:"images/sistemas/BOX150/electrico.png"},
+ {nombre:"llantas",img:"images/sistemas/BOX150/llantas.png"},
+ {nombre:"motor",img:"images/sistemas/BOX150/motor.png"},
+ {nombre:"rin y frenos",img:"images/sistemas/BOX150/rin%20y%20frenos.png"},
+ {nombre:"suspension",img:"images/sistemas/BOX150/suspension.png"}
+]},
+DOM400:{nombre:"Dominar 400",img:"images/motos/dom400-agua.png",sistemas:[
+ {nombre:"cabeza",img:"images/sistemas/DOM400/cabeza.png"}
+]},
+N125:{nombre:"Pulsar N125",img:"images/motos/n125.png",sistemas:[
+ {nombre:"cabeza",img:"images/sistemas/N125/cabeza.png"},
+ {nombre:"carenado",img:"images/sistemas/N125/carenado.png"},
+ {nombre:"electrico",img:"images/sistemas/N125/electrico.png"},
+ {nombre:"llantas",img:"images/sistemas/N125/llantas.png"}
+]},
+N160:{nombre:"Pulsar N160",img:"images/motos/n160.png",sistemas:[
+ {nombre:"cabeza",img:"images/sistemas/N160/cabeza.png"}
+]},
+N250:{nombre:"Pulsar N250",img:"images/motos/n250c.png",sistemas:[
+ {nombre:"motor",img:"images/sistemas/N250C/motor.png"},
+ {nombre:"electrico",img:"images/sistemas/N250C/electrico.png"},
+ {nombre:"frenos",img:"images/sistemas/N250C/sist.%20frenado.png"}
+]},
+NS125:{nombre:"Pulsar NS125",img:"images/motos/ns125.png",sistemas:[
+ {nombre:"cabeza",img:"images/sistemas/NS125/cabeza.png"}
+]},
+NS160:{nombre:"Pulsar NS160",img:"images/motos/ns160.png",sistemas:[
+ {nombre:"cabeza",img:"images/sistemas/NS160/cabeza.png"}
+]},
+NS200:{nombre:"Pulsar NS200",img:"images/motos/ns200.png",sistemas:[
+ {nombre:"cabeza",img:"images/sistemas/NS200/cabeza.png"}
+]},
+NS400Z:{nombre:"Pulsar NS400Z",img:"images/motos/ns400z.png",sistemas:[
+ {nombre:"cabeza",img:"images/sistemas/NS400Z/cabeza.png"}
+]},
+PLA100:{nombre:"Platina 100",img:"images/motos/platina100.png",sistemas:[
+ {nombre:"motor",img:"images/sistemas/PLA100/motor%20y%20tambor.png"}
+]},
+RS200:{nombre:"Pulsar RS200",img:"images/motos/rs200.png",sistemas:[
+ {nombre:"cabeza",img:"images/sistemas/RS200/cabeza.png"}
+]}
+};
+
+/* ================= ESTADO ================= */
+const motoSelect=document.getElementById("motoSelect");
+const sistemaSelect=document.getElementById("sistemaSelect");
 const canvas=document.getElementById("canvas");
 const ctx=canvas.getContext("2d");
+const tabla=document.getElementById("tabla");
+const imgSistema=document.getElementById("imgSistema");
 
-let motoActual="",sistemaActual="",admin=false,dibujando=false,puntos=[],zonas=[];
+let motoActual="",sistemaActual="";
+let zonas=[],puntos=[],zonaActiva=null;
 
-/* Cargar motos */
-Object.keys(catalogo).forEach(id=>{
-  const c=document.createElement("div");
-  c.className="card";
-  c.innerHTML=`<img src="${catalogo[id].img}"><p>${catalogo[id].nombre}</p>`;
-  c.onclick=()=>cargarSistemas(id);
-  gridMotos.appendChild(c);
-});
+/* ================= INIT ================= */
+for(const k in catalogo){
+  const o=document.createElement("option");
+  o.value=k;
+  o.textContent=catalogo[k].nombre;
+  motoSelect.appendChild(o);
+}
 
-function cargarSistemas(id){
-  motoActual=id;
-  document.getElementById("motos").classList.add("hidden");
-  document.getElementById("sistemas").classList.remove("hidden");
-  document.getElementById("titulo").textContent=catalogo[id].nombre;
-  gridSistemas.innerHTML="";
-  catalogo[id].sistemas.forEach(s=>{
-    const c=document.createElement("div");
-    c.className="card";
-    c.innerHTML=`<img src="${s.img}"><p>${s.nombre}</p>`;
-    c.onclick=()=>abrirOverlay(s);
-    gridSistemas.appendChild(c);
+motoSelect.onchange=()=>{
+  motoActual=motoSelect.value;
+  cargarSistemas();
+};
+motoSelect.selectedIndex=0;
+motoSelect.onchange();
+
+function cargarSistemas(){
+  sistemaSelect.innerHTML="";
+  catalogo[motoActual].sistemas.forEach((s,i)=>{
+    const o=document.createElement("option");
+    o.value=i;
+    o.textContent=s.nombre;
+    sistemaSelect.appendChild(o);
   });
+  sistemaSelect.onchange();
 }
 
-function volver(){
-  document.getElementById("motos").classList.remove("hidden");
-  document.getElementById("sistemas").classList.add("hidden");
-}
-
-function abrirOverlay(s){
+sistemaSelect.onchange=()=>{
+  const s=catalogo[motoActual].sistemas[sistemaSelect.value];
   sistemaActual=s.nombre;
-  imgBase.src=s.img;
-  overlay.style.display="block";
-  ajustarCanvas();
-  cargarZonas();
-}
-
-function cerrar(){
-  overlay.style.display="none";
-  salirAdmin();
-}
-
-/* Canvas */
-function ajustarCanvas(){
-  canvas.width=imgBase.clientWidth;
-  canvas.height=imgBase.clientHeight;
-}
-
-canvas.onmousedown=e=>{
-  if(!admin) return;
-  dibujando=true;
-  puntos=[[e.offsetX,e.offsetY]];
-  ctx.beginPath();
-  ctx.moveTo(e.offsetX,e.offsetY);
-};
-canvas.onmousemove=e=>{
-  if(!dibujando) return;
-  puntos.push([e.offsetX,e.offsetY]);
-  ctx.lineTo(e.offsetX,e.offsetY);
-  ctx.strokeStyle="red";
-  ctx.lineWidth=2;
-  ctx.stroke();
-};
-canvas.onmouseup=()=>dibujando=false;
-
-/* ADMIN */
-function loginAdmin(){
-  if(passAdmin.value!=="Neto30"){alert("Contraseña incorrecta");return;}
-  admin=true;
-  loginAdminDiv(true);
-}
-
-function salirAdmin(){
-  admin=false;
-  loginAdminDiv(false);
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-}
-
-function loginAdminDiv(on){
-  document.getElementById("loginAdmin").classList.toggle("hidden",on);
-  document.getElementById("adminPanel").classList.toggle("hidden",!on);
-  document.getElementById("salirAdminBtn").classList.toggle("hidden",!on);
-}
-
-/* Zonas */
-function keyLS(){return "ZONAS_"+motoActual+"_"+sistemaActual;}
-function guardarZona(){
-  zonas.push({puntos,codigo:codigo.value,desc:desc.value,cant:cant.value});
-  localStorage.setItem(keyLS(),JSON.stringify(zonas));
-  puntos=[];
-  renderTabla();
-}
-function cargarZonas(){
   zonas=JSON.parse(localStorage.getItem(keyLS()))||[];
+  cargarImagen(s.img);
   renderTabla();
+};
+
+/* ================= IMAGEN ================= */
+function cargarImagen(src){
+  imgSistema.src=src;
+  imgSistema.onload=()=>{
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.drawImage(imgSistema,0,0,canvas.width,canvas.height);
+    redibujar();
+  };
 }
+
+/* ================= ZONAS ================= */
+function keyLS(){
+  return "zonas_"+motoActual+"_"+sistemaActual;
+}
+
+function dibujarZona(z,activa=false){
+  ctx.beginPath();
+  z.puntos.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));
+  ctx.closePath();
+  ctx.fillStyle="rgba(255,0,0,0.3)";
+  ctx.fill();
+  ctx.strokeStyle=activa?"#00ffff":"#ff0000";
+  ctx.lineWidth=activa?3:2;
+  ctx.stroke();
+}
+
+function redibujar(){
+  ctx.drawImage(imgSistema,0,0,canvas.width,canvas.height);
+  zonas.forEach(z=>dibujarZona(z,z===zonaActiva));
+}
+
+/* ================= HIT TEST ================= */
+function dentro(x,y,p){
+  let c=false;
+  for(let i=0,j=p.length-1;i<p.length;j=i++){
+    if(((p[i][1]>y)!=(p[j][1]>y)) &&
+      (x<(p[j][0]-p[i][0])*(y-p[i][1])/(p[j][1]-p[i][1])+p[i][0]))
+      c=!c;
+  }
+  return c;
+}
+
+/* ================= CANVAS ================= */
+canvas.onclick=e=>{
+  const x=e.offsetX,y=e.offsetY;
+
+  for(let i=0;i<zonas.length;i++){
+    if(dentro(x,y,zonas[i].puntos)){
+      zonaActiva=zonas[i];
+      document.querySelectorAll("tr").forEach(r=>r.classList.remove("sel"));
+      document.querySelector(`tr[data-i="${i}"]`)?.classList.add("sel");
+      redibujar();
+      return;
+    }
+  }
+
+  if(!admin) return;
+  puntos.push([x,y]);
+};
+
+canvas.ondblclick=()=>{
+  if(!admin) return;
+  if(puntos.length<3) return alert("Mínimo 3 puntos");
+  zonas.push({codigo:"COD",desc:"Refacción",cant:1,puntos:[...puntos]});
+  puntos=[];
+  guardar();
+};
+
+/* ================= TABLA ================= */
 function renderTabla(){
   tabla.innerHTML="";
-  zonas.forEach(z=>{
-    tabla.innerHTML+=`<tr><td>${z.codigo}</td><td>${z.desc}</td><td>${z.cant}</td></tr>`;
+  zonas.forEach((z,i)=>{
+    const tr=document.createElement("tr");
+    tr.dataset.i=i;
+    tr.innerHTML=`
+      <td contenteditable="${admin}">${z.codigo}</td>
+      <td contenteditable="${admin}">${z.desc}</td>
+      <td contenteditable="${admin}">${z.cant}</td>
+      <td>
+        ${admin?`<button onclick="editar(${i})">✏️</button>
+        <button onclick="borrar(${i})">🗑️</button>`:""}
+        <button onclick="enviar(${i})">📦</button>
+      </td>`;
+    tr.onmouseenter=()=>{zonaActiva=z;redibujar();}
+    tr.onmouseleave=()=>{zonaActiva=null;redibujar();}
+    tr.oninput=()=>{
+      if(!admin) return;
+      z.codigo=tr.children[0].innerText;
+      z.desc=tr.children[1].innerText;
+      z.cant=tr.children[2].innerText;
+      guardar(false);
+    };
+    tabla.appendChild(tr);
   });
+}
+
+/* ================= ACCIONES ================= */
+function guardar(r=true){
+  localStorage.setItem(keyLS(),JSON.stringify(zonas));
+  if(r) renderTabla();
+  redibujar();
+}
+function editar(i){
+  if(!admin) return;
+  puntos=[...zonas[i].puntos];
+  zonas.splice(i,1);
+  guardar();
+  alert("Redibuja la zona");
+}
+function borrar(i){
+  if(!admin) return;
+  if(confirm("Eliminar zona?")){
+    zonas.splice(i,1);
+    guardar();
+  }
+}
+function enviar(i){
+  const z=zonas[i];
+  const msg=`📦 Refacción JQ Motors
+Moto: ${catalogo[motoActual].nombre}
+Sistema: ${sistemaActual}
+Código: ${z.codigo}
+Descripción: ${z.desc}
+Cantidad: ${z.cant}`;
+  window.open(document.getElementById("waBase").href+"?text="+encodeURIComponent(msg));
 }
 </script>
 
