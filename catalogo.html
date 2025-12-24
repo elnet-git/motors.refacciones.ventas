@@ -8,23 +8,16 @@
 <style>
 :root{
   --guinda:#7B1E1E;
-  --guinda-osc:#5a1414;
-  --neon:#ff4d4d;
   --fondo:#111;
 }
-
-/* ===== BASE ===== */
 body{
   margin:0;
   font-family:Montserrat,Arial;
   background:var(--fondo);
   color:#eee;
 }
-
-/* ===== NAV ===== */
 header.navbar{
   display:flex;
-  justify-content:space-between;
   align-items:center;
   background:var(--guinda);
   padding:10px 18px;
@@ -36,7 +29,6 @@ header.navbar{
 .logo img{height:60px}
 .logo h1{margin:0;font-size:1rem;color:#fff}
 
-/* ===== GRID ===== */
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
@@ -70,7 +62,6 @@ header.navbar{
 }
 .hidden{display:none}
 
-/* ===== OVERLAY INTERACTIVO ===== */
 .overlay{
   position:fixed;
   inset:0;
@@ -100,18 +91,12 @@ header.navbar{
   pointer-events:none;
   display:none;
 }
-
-/* ===== TABLA ===== */
 .data-panel{
   flex:1;
   background:#111;
   padding:15px;
   overflow:auto;
   border-left:2px solid #333;
-}
-.data-panel h3{
-  margin-top:0;
-  text-align:center;
 }
 table{
   width:100%;
@@ -121,13 +106,9 @@ table{
 th,td{
   border-bottom:1px solid #333;
   padding:6px;
-  text-align:left;
 }
-tr:hover{
-  background:#222;
-}
+tr:hover{background:#222}
 
-/* ===== ADMIN ===== */
 .admin-btn{
   position:absolute;
   bottom:20px;
@@ -139,10 +120,7 @@ tr:hover{
   cursor:pointer;
   border-radius:6px;
 }
-.admin-panel{
-  display:none;
-  margin-top:10px;
-}
+.admin-panel{display:none;margin-top:10px}
 .admin-panel input{
   width:100%;
   margin-bottom:6px;
@@ -177,10 +155,8 @@ tr:hover{
   <div class="grid" id="gridSistemas"></div>
 </section>
 
-<!-- OVERLAY -->
 <div class="overlay" id="overlay">
   <span class="close" onclick="cerrarOverlay()">✕</span>
-
   <div class="overlay-content">
     <div class="img-zone" id="imgZone">
       <img id="imgFull">
@@ -188,15 +164,11 @@ tr:hover{
 
     <div class="data-panel">
       <h3>Piezas</h3>
-      <table id="tablaPiezas">
+      <table>
         <thead>
-          <tr>
-            <th>Código</th>
-            <th>Descripción</th>
-            <th>Cant.</th>
-          </tr>
+          <tr><th>Código</th><th>Descripción</th><th>Cant.</th></tr>
         </thead>
-        <tbody></tbody>
+        <tbody id="tablaPiezas"></tbody>
       </table>
 
       <button class="admin-btn" onclick="activarAdmin()">ADMIN</button>
@@ -212,37 +184,7 @@ tr:hover{
 </div>
 
 <script>
-/* ===== ESTADO ===== */
-let motoActual="", sistemaActual="";
-let admin=false;
-let zonas=[];
-let zonaTemp=null;
-
-/* ===== CARGAS ===== */
-const gridMotos=document.getElementById("gridMotos");
-const gridSistemas=document.getElementById("gridSistemas");
-const overlay=document.getElementById("overlay");
-const imgFull=document.getElementById("imgFull");
-const imgZone=document.getElementById("imgZone");
-const tabla=document.querySelector("#tablaPiezas tbody");
-
-/* ===== ADMIN ===== */
-function activarAdmin(){
-  const pass=prompt("Contraseña admin:");
-  if(pass==="Neto30"){
-    admin=true;
-    document.getElementById("adminPanel").style.display="block";
-    alert("Modo admin activado\nArrastra sobre la imagen");
-  }
-}
-
-/* ===== LOCAL STORAGE ===== */
-function keyLS(){
-  return "ZONAS_"+motoActual+"_"+sistemaActual;
-}
-</script>
-<script>
-/* ===================== CATÁLOGO COMPLETO ===================== */
+/* ===================== CATÁLOGO ===================== */
 const catalogo = {
   AV220:{nombre:"Avenger 220",img:"images/motos/avenger220.png",
     sistemas:[{nombre:"carenado",img:"images/sistemas/AV220/carenado.png"}]},
@@ -254,15 +196,26 @@ const catalogo = {
     sistemas:[{nombre:"electrico",img:"images/sistemas/N160/electrico.png"}]}
 };
 
+/* ===================== ESTADO ===================== */
+let motoActual="", sistemaActual="";
+let admin=false;
+let zonas=[], zonaTemp=null;
+let startX=0,startY=0;
+
+const gridMotos=document.getElementById("gridMotos");
+const gridSistemas=document.getElementById("gridSistemas");
+const overlay=document.getElementById("overlay");
+const imgFull=document.getElementById("imgFull");
+const imgZone=document.getElementById("imgZone");
+const tabla=document.getElementById("tablaPiezas");
+
 /* ===================== INICIO ===================== */
 cargarMotos();
 
-/* ===================== FUNCIONES PRINCIPALES ===================== */
 function cargarMotos(){
   gridMotos.innerHTML="";
   document.getElementById("nivelMotos").classList.remove("hidden");
   document.getElementById("nivelSistemas").classList.add("hidden");
-
   Object.keys(catalogo).forEach(id=>{
     const c=document.createElement("div");
     c.className="card";
@@ -278,7 +231,6 @@ function cargarSistemas(id){
   document.getElementById("nivelMotos").classList.add("hidden");
   document.getElementById("nivelSistemas").classList.remove("hidden");
   document.getElementById("tituloSistemas").textContent=catalogo[id].nombre;
-
   catalogo[id].sistemas.forEach(s=>{
     const c=document.createElement("div");
     c.className="card";
@@ -288,9 +240,8 @@ function cargarSistemas(id){
   });
 }
 
-function volverMotos(){ cargarMotos(); }
+function volverMotos(){cargarMotos();}
 
-/* ===================== OVERLAY ===================== */
 function abrirOverlay(sistema,img){
   sistemaActual=sistema;
   overlay.style.display="block";
@@ -305,18 +256,23 @@ function cerrarOverlay(){
   imgZone.querySelectorAll(".zone").forEach(z=>z.remove());
 }
 
-/* ===================== ZONAS ===================== */
+function activarAdmin(){
+  if(prompt("Contraseña admin:")==="Neto30"){
+    admin=true;
+    document.getElementById("adminPanel").style.display="block";
+    alert("Modo admin activo");
+  }
+}
+
+function keyLS(){return "ZONAS_"+motoActual+"_"+sistemaActual;}
+
 function cargarZonas(){
   zonas=JSON.parse(localStorage.getItem(keyLS()))||[];
   imgZone.querySelectorAll(".zone").forEach(z=>z.remove());
-
   zonas.forEach(z=>{
     const d=document.createElement("div");
     d.className="zone";
-    d.style.left=z.x+"px";
-    d.style.top=z.y+"px";
-    d.style.width=z.w+"px";
-    d.style.height=z.h+"px";
+    Object.assign(d.style,{left:z.x+"px",top:z.y+"px",width:z.w+"px",height:z.h+"px"});
     imgZone.appendChild(d);
     z.el=d;
   });
@@ -324,7 +280,7 @@ function cargarZonas(){
 
 function renderTabla(){
   tabla.innerHTML="";
-  zonas.forEach((z,i)=>{
+  zonas.forEach(z=>{
     const tr=document.createElement("tr");
     tr.innerHTML=`<td>${z.codigo}</td><td>${z.desc}</td><td>${z.cant}</td>`;
     tr.onmouseenter=()=>z.el.style.display="block";
@@ -333,28 +289,21 @@ function renderTabla(){
   });
 }
 
-/* ===================== DIBUJO ADMIN ===================== */
-let startX=0,startY=0;
 imgZone.addEventListener("mousedown",e=>{
   if(!admin) return;
-  startX=e.offsetX;
-  startY=e.offsetY;
+  startX=e.offsetX; startY=e.offsetY;
   zonaTemp=document.createElement("div");
   zonaTemp.className="zone";
   zonaTemp.style.left=startX+"px";
   zonaTemp.style.top=startY+"px";
   imgZone.appendChild(zonaTemp);
 });
-
 imgZone.addEventListener("mousemove",e=>{
   if(!admin||!zonaTemp) return;
   zonaTemp.style.width=(e.offsetX-startX)+"px";
   zonaTemp.style.height=(e.offsetY-startY)+"px";
 });
-
-imgZone.addEventListener("mouseup",()=>{
-  if(!admin||!zonaTemp) return;
-});
+imgZone.addEventListener("mouseup",()=>{});
 
 function guardarZona(){
   if(!zonaTemp) return;
