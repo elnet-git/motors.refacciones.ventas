@@ -78,37 +78,219 @@ tr:hover{background:#222}
 </div>
 
 <script>
-/* ================= CATÁLOGO COMPLETO ================= */
+/* ===================== CATÁLOGO ===================== */
 const catalogo = {
-  AV220:{nombre:"Avenger 220",img:"images/motos/avenger220.png",sistemas:[
-    {nombre:"motor",img:"images/sistemas/AV220/motor.png"},
-    {nombre:"electrico",img:"images/sistemas/AV220/electrico.png"}
-  ]},
-  BOX150:{nombre:"Boxer 150",img:"images/motos/boxer150.png",sistemas:[
-    {nombre:"motor",img:"images/sistemas/BOX150/motor.png"}
-  ]},
-  DOM250:{nombre:"Dominar 250",img:"images/motos/dominar250.png",sistemas:[
-    {nombre:"motor",img:"images/sistemas/DOM250/motor%20y%20pedal%20de%20cambios.png"}
-  ]},
-  DOM400:{nombre:"Dominar 400",img:"images/motos/dom400-agua.png",sistemas:[
-    {nombre:"cabeza",img:"images/sistemas/DOM400/cabeza.png"}
-  ]},
-  N125:{nombre:"Pulsar N125",img:"images/motos/n125.png",sistemas:[
-    {nombre:"motor",img:"images/sistemas/N125/cilindro.png"}
-  ]},
-  N160:{nombre:"Pulsar N160",img:"images/motos/n160.png",sistemas:[
-    {nombre:"motor",img:"images/sistemas/N160/cilindro.png"}
-  ]},
-  N250C:{nombre:"Pulsar N250",img:"images/motos/n250c.png",sistemas:[
-    {nombre:"motor",img:"images/sistemas/N250C/motor.png"}
-  ]},
-  NS200:{nombre:"Pulsar NS200",img:"images/motos/ns200.png",sistemas:[
-    {nombre:"motor",img:"images/sistemas/NS200/cabeza.png"}
-  ]},
-  RS200:{nombre:"Pulsar RS200",img:"images/motos/rs200.png",sistemas:[
-    {nombre:"motor",img:"images/sistemas/RS200/cabeza.png"}
-  ]}
+  AV220: {
+    nombre: "Avenger 220",
+    img: "images/motos/avenger220.png",
+    sistemas: [
+      {nombre:"carenado", img:"images/sistemas/AV220/carenado.png"},
+      {nombre:"cilindro", img:"images/sistemas/AV220/cilindro.png"},
+      {nombre:"electrico", img:"images/sistemas/AV220/electrico.png"},
+      {nombre:"frenos", img:"images/sistemas/AV220/frenos.png"},
+      {nombre:"llantas", img:"images/sistemas/AV220/llantas.png"},
+      {nombre:"motor", img:"images/sistemas/AV220/motor.png"},
+      {nombre:"suspension", img:"images/sistemas/AV220/suspension.png"},
+      {nombre:"transmision", img:"images/sistemas/AV220/transmision.png"}
+    ]
+  },
+  BOX150: {
+    nombre: "Boxer 150",
+    img: "images/motos/boxer150.png",
+    sistemas: [
+      {nombre:"carburador", img:"images/sistemas/BOX150/carburador.png"},
+      {nombre:"carenado", img:"images/sistemas/BOX150/carenado.png"},
+      {nombre:"electrico", img:"images/sistemas/BOX150/electrico.png"},
+      {nombre:"llantas", img:"images/sistemas/BOX150/llantas.png"},
+      {nombre:"motor", img:"images/sistemas/BOX150/motor.png"},
+      {nombre:"rin y frenos", img:"images/sistemas/BOX150/rin%20y%20frenos.png"},
+      {nombre:"suspension", img:"images/sistemas/BOX150/suspension.png"}
+    ]
+  },
+  DOM250: {
+    nombre: "Dominar 250",
+    img: "images/motos/dominar250.png",
+    sistemas: [
+      {nombre:"cabeza y valvulas", img:"images/sistemas/DOM250/cabeza%20y%20valvulas.png"},
+      {nombre:"carenado y sis. electrico", img:"images/sistemas/DOM250/carenado%20y%20sis.%20electrico.png"},
+      {nombre:"chasis y suspencion", img:"images/sistemas/DOM250/chasis%20y%20suspencion.png"},
+      {nombre:"cilindro", img:"images/sistemas/DOM250/cilindro.png"},
+      {nombre:"cuerpo de aceleracion", img:"images/sistemas/DOM250/cuerpo%20de%20aceleracion.png"},
+      {nombre:"direccionales y arnes", img:"images/sistemas/DOM250/direccionales%20y%20arnes.png"},
+      {nombre:"llantas", img:"images/sistemas/DOM250/llantas.png"},
+      {nombre:"motor y pedal de cambios", img:"images/sistemas/DOM250/motor%20y%20pedal%20de%20cambios.png"},
+      {nombre:"radiador", img:"images/sistemas/DOM250/radiador.png"},
+      {nombre:"sistema de frenado y mando", img:"images/sistemas/DOM250/sistema%20de%20frenado%20y%20mando.png"}
+    ]
+  },
+DOM400: {
+  nombre: "Dominar 400",
+  img: "images/motos/dom400-agua.png",
+  sistemas: [
+    { nombre:"cabeza", img:"images/sistemas/DOM400/cabeza.png" }
+  ]
+},
+
+DOM400A: {
+  nombre: "Dominar 400 Aire",
+  img: "images/motos/dom400-agua.png",
+  sistemas: [
+    { nombre:"cabeza", img:"images/sistemas/DOM400/cabeza.png" }
+  ]
+},
+
+DOM400F: {
+  nombre: "Dominar 400 Fuego",
+  img: "images/motos/dom400-agua.png",
+  sistemas: [
+    { nombre:"cabeza", img:"images/sistemas/DOM400/cabeza.png" }
+  ]
+},
+
+DOM400T: {
+  nombre: "Dominar 400 Tierra",
+  img: "images/motos/dom400-agua.png",
+  sistemas: [
+    { nombre:"cabeza", img:"images/sistemas/DOM400/cabeza.png" }
+  ]
+},
+
+DOM400UG: {
+  nombre: "Dominar 400 UG",
+  img: "images/motos/dom400-agua.png",
+  sistemas: [
+    { nombre:"cabeza", img:"images/sistemas/DOM400/cabeza.png" }
+  ]
+},
+  
+  N125: {
+    nombre: "Pulsar N125",
+    img: "images/motos/n125.png",
+    sistemas: [
+      {nombre:"arbol de levas", img:"images/sistemas/N125/arbol%20de%20levas.png"},
+      {nombre:"cabeza", img:"images/sistemas/N125/cabeza.png"},
+      {nombre:"carenado", img:"images/sistemas/N125/carenado.png"},
+      {nombre:"carter", img:"images/sistemas/N125/carter.png"},
+      {nombre:"chasis", img:"images/sistemas/N125/chasis.png"},
+      {nombre:"cigueñal", img:"images/sistemas/N125/cigueñal.png"},
+      {nombre:"cilindro", img:"images/sistemas/N125/cilindro.png"},
+      {nombre:"clucht", img:"images/sistemas/N125/clucht.png"},
+      {nombre:"electrico", img:"images/sistemas/N125/electrico.png"},
+      {nombre:"faro", img:"images/sistemas/N125/faro.png"},
+      {nombre:"llantas", img:"images/sistemas/N125/llantas.png"},
+      {nombre:"mando", img:"images/sistemas/N125/mando.png"},
+      {nombre:"pedal de arranque", img:"images/sistemas/N125/pedal%20de%20arranque.png"},
+      {nombre:"posapies", img:"images/sistemas/N125/posapies.png"},
+      {nombre:"salpicaderas", img:"images/sistemas/N125/salpicaderas.png"},
+      {nombre:"suspencion", img:"images/sistemas/N125/suspencion.png"},
+      {nombre:"tambor", img:"images/sistemas/N125/tambor.png"},
+      {nombre:"transmicion", img:"images/sistemas/N125/transmicion.png"},
+      {nombre:"valvulas", img:"images/sistemas/N125/valvulas.png"}
+    ]
+  },
+  N160: {
+    nombre:"Pulsar N160",
+    img:"images/motos/n160.png",
+    sistemas:[
+      {nombre:"cabeza", img:"images/sistemas/N160/cabeza.png"},
+      {nombre:"carenado y velocimetro", img:"images/sistemas/N160/carenado%20y%20velocimetro.png"},
+      {nombre:"chasis, llantas, posapies", img:"images/sistemas/N160/chasis,%20llantas,%20posapies.png"},
+      {nombre:"cilindro", img:"images/sistemas/N160/cilindro.png"},
+      {nombre:"electrico", img:"images/sistemas/N160/electrico.png"},
+      {nombre:"frenado, tanque y mando", img:"images/sistemas/N160/frenado,%20tanque%20y%20mando.png"}
+    ]
+  },
+  N250C: {
+    nombre:"Pulsar N250",
+    img:"images/motos/n250c.png",
+    sistemas:[
+      {nombre:"arbol de levas", img:"images/sistemas/N250C/arbol%20de%20levas.png"},
+      {nombre:"barras", img:"images/sistemas/N250C/barras.png"},
+      {nombre:"cabeza de cilindro", img:"images/sistemas/N250C/cabeza%20de%20cilindro.png"},
+      {nombre:"cabeza", img:"images/sistemas/N250C/cabeza.png"},
+      {nombre:"carburador", img:"images/sistemas/N250C/carburador.png"},
+      {nombre:"carenado trasero", img:"images/sistemas/N250C/carenado%20trasero.png"},
+      {nombre:"carenado", img:"images/sistemas/N250C/carenado.png"},
+      {nombre:"carter", img:"images/sistemas/N250C/carter.png"},
+      {nombre:"chasis", img:"images/sistemas/N250C/chasis.png"},
+      {nombre:"cigueñal", img:"images/sistemas/N250C/cigueñal.png"},
+      {nombre:"cilindro", img:"images/sistemas/N250C/cilindro.png"},
+      {nombre:"electrico", img:"images/sistemas/N250C/electrico.png"},
+      {nombre:"escape", img:"images/sistemas/N250C/escape.png"},
+      {nombre:"estator", img:"images/sistemas/N250C/estator.png"},
+      {nombre:"faro", img:"images/sistemas/N250C/faro.png"},
+      {nombre:"filtro de aire", img:"images/sistemas/N250C/filtro%20de%20aire.png"},
+      {nombre:"mando", img:"images/sistemas/N250C/mando.png"},
+      {nombre:"parador lateral y central", img:"images/sistemas/N250C/parador%20lateral%20y%20central.png"},
+      {nombre:"pedal de cambios", img:"images/sistemas/N250C/pedal%20de%20cambios.png"},
+      {nombre:"pedal de freno", img:"images/sistemas/N250C/pedal%20de%20freno.png"},
+      {nombre:"porta placa", img:"images/sistemas/N250C/porta%20placa.png"},
+      {nombre:"radiador", img:"images/sistemas/N250C/radiador.png"},
+      {nombre:"rin y llantas", img:"images/sistemas/N250C/rin%20y%20llantas.png"},
+      {nombre:"salpicaderas", img:"images/sistemas/N250C/salpicaderas.png"},
+      {nombre:"sist. frenado", img:"images/sistemas/N250C/sist.%20frenado.png"},
+      {nombre:"suspencion", img:"images/sistemas/N250C/suspencion.png"},
+      {nombre:"tablero", img:"images/sistemas/N250C/tablero.png"},
+      {nombre:"tambor", img:"images/sistemas/N250C/tambor.png"},
+      {nombre:"tanque", img:"images/sistemas/N250C/tanque.png"},
+      {nombre:"transmision", img:"images/sistemas/N250C/transmision.png"},
+      {nombre:"valvulas", img:"images/sistemas/N250C/valvulas.png"}
+    ]
+  },
+  N250FI: {
+    nombre: "Pulsar N250 FI",
+    img: "images/motos/n250fi.png",
+    sistemas: [
+      { nombre:"motor", img:"images/sistemas/N250C/motor.png" },
+      { nombre:"electrico", img:"images/sistemas/N250C/electrico.png" },
+      { nombre:"frenos", img:"images/sistemas/N250C/sist.%20frenado.png" }
+    ]
+  },
+  NS125: {
+    nombre:"Pulsar NS125",
+    img:"images/motos/ns125.png",
+    sistemas:[
+      {nombre:"cabeza", img:"images/sistemas/NS125/cabeza.png"},
+      {nombre:"cigueñal", img:"images/sistemas/NS125/cigueñal.png"},
+      {nombre:"cilindro", img:"images/sistemas/NS125/cilindro.png"},
+      {nombre:"transmision", img:"images/sistemas/NS125/transmision.png"},
+      {nombre:"valvulas", img:"images/sistemas/NS125/valvulas.png"}
+    ]
+  },
+  NS160: { nombre:"Pulsar NS160", img:"images/motos/ns160.png", sistemas:[{nombre:"cabeza", img:"images/sistemas/NS160/cabeza.png"}]},
+  NS200: { nombre:"Pulsar NS200", img:"images/motos/ns200.png", sistemas:[{nombre:"cabeza", img:"images/sistemas/NS200/cabeza.png"}]},
+  NS400Z: { nombre:"Pulsar NS400Z", img:"images/motos/ns400z.png", sistemas:[{nombre:"cabeza", img:"images/sistemas/NS400Z/cabeza.png"}]},
+  PLA100: {
+    nombre:"Platina 100",
+    img:"images/motos/platina100.png",
+    sistemas:[
+      {nombre:"cabeza y valvulas", img:"images/sistemas/PLA100/cabeza%20y%20valvulas.png"},
+      {nombre:"carburador y cluch", img:"images/sistemas/PLA100/carburador%20y%20cluch.png"},
+      {nombre:"chasis", img:"images/sistemas/PLA100/chasis.png"},
+      {nombre:"cilindro cigueñal y transmicion", img:"images/sistemas/PLA100/cilindro%20cigueñal%20y%20transmicion.png"},
+      {nombre:"frenos y mando", img:"images/sistemas/PLA100/frenos%20y%20mando.png"},
+      {nombre:"motor y tambor", img:"images/sistemas/PLA100/motor%20y%20tambor.png"}
+    ]
+  },
+RS200: {
+  nombre:"Pulsar RS200",
+  img:"images/motos/rs200.png",
+  sistemas:[
+    {nombre:"cabeza", img:"images/sistemas/RS200/cabeza.png"}
+  ]
+}
 };
+
+/* ===================== REFERENCIAS ===================== */
+const gridMotos = document.getElementById("gridMotos");
+const gridSistemas = document.getElementById("gridSistemas");
+const nivelMotos = document.getElementById("nivelMotos");
+const nivelSistemas = document.getElementById("nivelSistemas");
+const tituloSistemas = document.getElementById("tituloSistemas");
+const overlay = document.getElementById("overlay");
+const imgFull = document.getElementById("imgFull");
+
+let scale = 1;
 
 /* ================= ESTADO ================= */
 let motoActual="", sistemaActual="";
